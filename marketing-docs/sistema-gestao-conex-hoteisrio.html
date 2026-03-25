@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestão — CONEX HotéisRIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0a2e50;
+            --gold: #c5a059;
+            --ice: #f8fafd;
+            --text-dark: #333333;
+            --glass-bg: rgba(255, 255, 256, 0.95);
+            --shadow: 0 10px 40px rgba(10, 46, 80, 0.1);
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--ice); color: var(--text-dark); padding: 50px; }
+        .container { max-width: 1100px; margin: 0 auto; background: var(--glass-bg); padding: 60px; border-radius: 40px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.4); }
+        header { text-align: left; margin-bottom: 50px; border-left: 6px solid var(--navy); padding-left: 30px; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; color: var(--navy); }
+        h1 { font-size: 2.4rem; font-weight: 800; }
+        .badge { display: inline-block; background: var(--gold); color: #fff; padding: 6px 18px; border-radius: 30px; font-size: 0.75rem; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 40px; }
+        .feature-item { background: #fff; border: 1px solid #eee; padding: 30px; border-radius: 24px; transition: 0.3s; }
+        .feature-item:hover { box-shadow: 0 15px 30px rgba(0,0,0,0.05); transform: translateY(-5px); }
+        .feature-item i { font-size: 1.8rem; color: var(--gold); margin-bottom: 20px; }
+        .feature-item h3 { margin-bottom: 15px; font-size: 1.2rem; }
+        .feature-item p { font-size: 0.9rem; color: #666; line-height: 1.6; }
+        
+        .architecture { margin-top: 60px; background: var(--navy); color: #fff; padding: 40px; border-radius: 30px; }
+        .architecture h2 { color: #fff; margin-bottom: 20px; font-size: 1.5rem; }
+        .tech-stack { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
+        .tech-pill { background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">Gestão Operacional B2B</div>
+            <h1>Sistema de Controle CONEX</h1>
+            <p style="opacity: 0.7; font-weight: 600;">O coração do atendimento institucional HotéisRIO para grandes eventos e consulados.</p>
+        </header>
+
+        <section class="feature-grid">
+            <div class="feature-item">
+                <i class="fas fa-th-large"></i>
+                <h3>Painel em Tempo Real</h3>
+                <p>Visualização imediata de todas as demandas recebidas, monitoradas com status de SLA (Atendido, Em Andamento, Pendente).</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-database"></i>
+                <h3>Persistência em Supabase</h3>
+                <p>Base de dados escalável com integração direta entre o formulário do portal e o Painel de Controle Operacional.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-whatsapp"></i>
+                <h3>Notificações Lead-To-Wpp</h3>
+                <p>Cada novo lead capturado dispara alertas automáticos em tempo real para a equipe de marketing e parceiros estratégicos.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-chart-line"></i>
+                <h3>Inteligência de Mercado</h3>
+                <p>Segmentação automática por categoria (Corporativo, MICE, Lazer, Produção) para roteamento preciso em menos de 2h.</p>
+            </div>
+        </section>
+
+        <div class="architecture">
+            <h2>Stack Tecnológica</h2>
+            <div class="tech-stack">
+                <span class="tech-pill">React 18 (Vite)</span>
+                <span class="tech-pill">Tailwind CSS (Aesthetics)</span>
+                <span class="tech-pill">Supabase (PostgreSQL)</span>
+                <span class="tech-pill">Lucide Icons</span>
+                <span class="tech-pill">Framer Motion</span>
+            </div>
+            <p style="font-size: 0.85rem; margin-top: 25px; opacity: 0.8;">Sistema projetado para alta confiabilidade e segurança institucional.</p>
+        </div>
+    </div>
+</body>
+</html>

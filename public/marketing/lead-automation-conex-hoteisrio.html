@@ -42,32 +42,41 @@
         </header>
 
         <section class="automation-section">
-            <h2 style="margin-bottom: 20px;">01. Sequência de E-mails (Nurture)</h2>
+            <h2 style="margin-bottom: 20px;">01. Sequência de Confirmação Automática (CLIENTE)</h2>
             <div class="email-card">
-                <h4>E-mail 01: Boas-vindas (T=0)</h4>
+                <h4>E-mail de Confirmação (T=0)</h4>
                 <div class="email-copy">
-                    Assunto: Sua solicitação hoteleira no Rio foi recebida — CONEX HotéisRIO<br><br>
-                    Olá, {{primeiro_nome}}. Recebemos sua demanda... Em breve os decisores dos hotéis entrarão em contato direto.
+                    Assunto: Recebemos sua solicitação — Protocolo #{{id_demanda}}<br><br>
+                    Olá, {{primeiro_nome}}. Confirmamos o recebimento da sua demanda institucional via CONEX HotéisRIO. 
+                    Nossa equipe técnica agora validará os dados e roteará para os hotéis associados. <br><br>
+                    Você pode acompanhar o status em tempo real aqui: https://hoteisrio.com.br/consultar
                 </div>
             </div>
-            <div class="email-card">
-                <h4>E-mail 02: O Atalho (T+24h)</h4>
-                <div class="email-copy">
-                    Assunto: O atalho institucional para seu evento no Rio<br><br>
-                    Olá, {{primeiro_nome}}. Nossa ponte é institucional e direta. Sua demanda chega na mesa de quem decide condições diferenciadas.
+            <div class="wa-box">
+                <i class="fab fa-whatsapp"></i>
+                <div style="font-size:0.9rem;">
+                    <strong>Confirmador Automático (WhatsApp):</strong><br>
+                    "Olá, {{primeiro_nome}}! O CONEX HotéisRIO recebeu sua demanda **{{id_demanda}}**. Estamos analisando seu pedido para a **{{nome_empresa}}** e daremos retorno em breve."
                 </div>
             </div>
         </section>
 
-        <section class="automation-section">
-            <h2 style="margin-bottom: 20px;">02. Scripts WhatsApp</h2>
-            <div class="wa-box">
-                <i class="fab fa-whatsapp"></i>
-                <div style="font-size:0.9rem;">
-                    <strong>Primeiro Contato (Pós-Lead):</strong><br>
-                    "Olá, {{primeiro_nome}}! Sou da equipe institucional do **CONEX HotéisRIO**. Acabamos de receber sua solicitação para o grupo/evento da {{nome_empresa}}..."
+        <section class="automation-section" style="background: rgba(10, 46, 80, 0.05); padding: 30px; border-radius: 20px; border-left: 6px solid var(--navy);">
+            <h2 style="margin-bottom: 20px;">02. Notificação Interna (ADMIN / GRUPO)</h2>
+            <div class="wa-box" style="background: #fff;">
+                <i class="fas fa-shield-alt" style="color: var(--navy);"></i>
+                <div style="font-size:0.85rem;">
+                    <strong>Script de Alerta Administrativo:</strong><br>
+                    "🚀 *Novo Lead CONEX HotéisRIO* 🚀<br>
+                    📌 *Protocolo:* {{id}}<br>
+                    🏨 *Empresa:* {{hotelName}}<br>
+                    👤 *Solicitante:* {{responsavel}}<br>
+                    🏷️ *Categoria:* {{demanda}}<br><br>
+                    ---<br>
+                    *Gerenciar:* https://conex.hoteisrio.com.br/gestao"
                 </div>
             </div>
+            <p style="font-size: 0.75rem; margin-top: 15px; color: var(--navy); font-weight: 700;">Destinatários: Administrador Individual + Grupo WhatsApp 'Escritório HotéisRIO'</p>
         </section>
     </div>
 </body>

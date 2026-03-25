@@ -20,6 +20,9 @@ const LandingPage: React.FC = () => {
             <a href="/marketing/index-pipeline-conex-hoteisrio.html" target="_blank" className="hidden md:block text-[10px] font-black uppercase tracking-[0.2em] text-[#0a2e50] hover:text-[#c5a059] transition-colors">
               Planejamento
             </a>
+            <Link to="/gestao" className="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-[#0a2e50] transition-colors">
+              <LogIn className="w-3 h-3" /> Acesso Restrito
+            </Link>
             <Link to="/enviar" className="bg-[#0a2e50] text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-[#c5a059] transition-all shadow-lg hover:-translate-y-0.5">
               Enviar Demanda
             </Link>
