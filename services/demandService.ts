@@ -1,0 +1,155 @@
+import { Demand, Status } from '../types';
+import { normalizeRegion } from './locations';
+import { supabase } from './supabase';
+
+const TABLE_NAME = 'demands';
+
+const sanitizeData = (data: Demand): Demand => {
+  const cleanData = { ...data } as any;
+  Object.keys(cleanData).forEach((key) => {
+    if (cleanData[key] === undefined) {
+      cleanData[key] = null;
+    }
+  });
+  return cleanData as Demand;
+};
+
+const normalizeDemand = (demand: any): Demand => ({
+  ...demand,
+  category: Array.isArray(demand.category) ? demand.category : [demand.category].filter(Boolean),
+  region: normalizeRegion(demand.region || ''),
+});
+
+// Mapping frontend Demand fields (camelCase) to DB snake_case if needed
+// But for now, we'll use camelCase in DB if possible, or mapping
+// Actually, let's map it for robust DB practice
+const toDB = (d: Demand) => ({
+  id: d.id,
+  hotel_name: d.hotelName,
+  region: d.region,
+  neighborhood: d.neighborhood,
+  address: d.address,
+  contact_email: d.contactEmail,
+  contact_phone: d.contactPhone,
+  category: d.category,
+  description: d.description,
+  status: d.status,
+  date_opened: d.dateOpened,
+  date_resolved: d.dateResolved,
+  assigned_agency: d.assignedAgency,
+  lat: d.lat,
+  lng: d.lng,
+  attachments: d.attachments || [],
+  custom_fields: d.customFields || {}
+});
+
+const fromDB = (d: any): Demand => ({
+  id: d.id,
+  hotelName: d.hotel_name,
+  region: d.region,
+  neighborhood: d.neighborhood,
+  address: d.address,
+  contactEmail: d.contact_email,
+  contactPhone: d.contact_phone,
+  category: d.category || [],
+  description: d.description,
+  status: d.status as Status,
+  dateOpened: d.date_opened,
+  dateResolved: d.date_resolved,
+  assignedAgency: d.assigned_agency,
+  lat: d.lat,
+  lng: d.lng,
+  attachments: d.attachments || [],
+  customFields: d.custom_fields || {}
+});
+
+export const demandService = {
+  async getAll(): Promise<Demand[]> {
+    const { data, error } = await supabase
+      .from(TABLE_NAME)
+      .select('*')
+      .order('date_opened', { ascending: false });
+    
+    if (error) {
+      console.error('Error fetching demands:', error);
+      // Fallback to localStorage could be here, but let's stick to Supabase
+      return [];
+    }
+    
+    return (data || []).map(fromDB).map(normalizeDemand);
+  },
+
+  async replaceAll(demands: Demand[]): Promise<void> {
+    const dbDemands = demands.map(toDB);
+    // Be careful with large batches, but for simple sync it's fine
+    const { error } = await supabase
+      .from(TABLE_NAME)
+      .upsert(dbDemands);
+    
+    if (error) console.error('Error in replaceAll:', error);
+  },
+
+  async syncSeedDemands(seedVersion: string, demands: Demand[]): Promise<void> {
+    // For now we skip seed in Supabase to avoid overwriting production data
+    console.log('Seed sync skipped for Supabase.');
+  },
+
+  async update(demand: Demand): Promise<void> {
+    const { error } = await supabase
+      .from(TABLE_NAME)
+      .update(toDB(demand))
+      .eq('id', demand.id);
+    
+    if (error) console.error('Error updating demand:', error);
+  },
+
+  async add(demand: Demand): Promise<Demand> {
+    const nextDemand = { ...demand };
+    if (!nextDemand.id) {
+       nextDemand.id = `CX-${Date.now()}`;
+    }
+    
+    const { data, error } = await supabase
+      .from(TABLE_NAME)
+      .upsert([toDB(nextDemand)])
+      .select();
+    
+    if (error) {
+       console.error('Error adding demand:', error);
+       throw error;
+    }
+    
+    return data && data[0] ? fromDB(data[0]) : nextDemand;
+  },
+
+  async delete(id: string): Promise<void> {
+    const { error } = await supabase
+      .from(TABLE_NAME)
+      .delete()
+      .eq('id', id);
+    if (error) console.error('Error deleting demand:', error);
+  },
+
+  async batchDelete(ids: string[]): Promise<void> {
+    const { error } = await supabase
+      .from(TABLE_NAME)
+      .delete()
+      .in('id', ids);
+    if (error) console.error('Error batch deleting:', error);
+  },
+
+  async batchAdd(demands: Demand[]): Promise<void> {
+    const { error } = await supabase
+      .from(TABLE_NAME)
+      .upsert(demands.map(toDB));
+    if (error) console.error('Error batch adding:', error);
+  },
+
+  async sendAutomaticNotification(demand: Demand): Promise<void> {
+    console.log('Sending automatic notification (MOCK):', demand.id);
+  },
+
+  async sendStatusUpdateNotification(demand: Demand, customSubject?: string, customBody?: string): Promise<void> {
+    console.log('Sending status update notification (MOCK):', demand.id, customSubject || 'Status Updated');
+  },
+};

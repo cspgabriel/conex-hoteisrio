@@ -1,0 +1,31 @@
+﻿App.tsx(171,1): error TS1185: Merge conflict marker encountered.
+App.tsx(173,1): error TS1185: Merge conflict marker encountered.
+App.tsx(175,1): error TS1185: Merge conflict marker encountered.
+App.tsx(260,1): error TS1185: Merge conflict marker encountered.
+App.tsx(264,1): error TS1185: Merge conflict marker encountered.
+App.tsx(267,1): error TS1185: Merge conflict marker encountered.
+components/DemandDetailPage.tsx(140,17): error TS1005: '</' expected.
+components/DemandDetailPage.tsx(142,1): error TS1185: Merge conflict marker encountered.
+components/DemandDetailPage.tsx(179,1): error TS1185: Merge conflict marker encountered.
+components/DemandDetailPage.tsx(189,1): error TS1185: Merge conflict marker encountered.
+components/DemandDetailPage.tsx(242,13): error TS1128: Declaration or statement expected.
+components/DemandDetailPage.tsx(254,11): error TS1128: Declaration or statement expected.
+components/DemandDetailPage.tsx(255,9): error TS1109: Expression expected.
+components/DemandDetailPage.tsx(256,7): error TS1109: Expression expected.
+components/DemandDetailPage.tsx(258,8): error TS1136: Property assignment expected.
+components/DemandDetailPage.tsx(258,9): error TS1005: ';' expected.
+components/DemandDetailPage.tsx(265,8): error TS1128: Declaration or statement expected.
+components/DemandDetailPage.tsx(266,5): error TS1128: Declaration or statement expected.
+components/DemandDetailPage.tsx(267,3): error TS1109: Expression expected.
+components/DemandDetailPage.tsx(268,1): error TS1128: Declaration or statement expected.
+components/EditDemandModal.tsx(256,1): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/EditDemandModal.tsx(256,2): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/EditDemandModal.tsx(256,3): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/EditDemandModal.tsx(256,4): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/EditDemandModal.tsx(256,5): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/EditDemandModal.tsx(256,6): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/EditDemandModal.tsx(256,7): error TS1382: Unexpected token. Did you mean `{'>'}` or `&gt;`?
+components/StatCard.tsx(15,1): error TS1185: Merge conflict marker encountered.
+components/StatCard.tsx(19,1): error TS1185: Merge conflict marker encountered.
+components/StatCard.tsx(24,1): error TS1185: Merge conflict marker encountered.
+components/StatCard.tsx(40,7): error TS17002: Expected corresponding JSX closing tag for 'div'.

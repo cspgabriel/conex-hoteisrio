@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONEX HotéisRIO — Conectando Stakeholders à Hotelaria Carioca</title>
+    <meta name="description" content="O canal oficial do HotéisRIO para conectar centros de convenções, consulados e empresas diretamente aos tomadores de decisão da hotelaria no Rio de Janeiro.">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --navy: #0a2e50;
+            --gold: #c5a059;
+            --sky: #0077c2;
+            --ice: #f8fafd;
+            --text: #333333;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.85);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 10px 40px rgba(10, 46, 80, 0.08);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--ice);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--navy);
+            line-height: 1.1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span { color: var(--gold); }
+
+        .cta-nav {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 10px 25px;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .cta-nav:hover {
+            background-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, #0a2e50 0%, #001a33 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--white);
+            margin-bottom: 25px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Features/Services */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header span {
+            color: var(--gold);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-top: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+        }
+
+        .card i {
+            display: block;
+            margin-bottom: 20px;
+            color: var(--gold);
+            font-size: 2rem;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        /* Form Section */
+        .form-section {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 100px 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .form-container {
+            background: var(--glass);
+            padding: 50px;
+            border-radius: 20px;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(197, 160, 89, 0.1);
+        }
+
+        .btn-submit {
+            background-color: var(--navy);
+            color: var(--white);
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        /* Footer */
+        footer {
+            background: #051629;
+            color: var(--white);
+            padding: 50px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer p { opacity: 0.6; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .section h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-content">
+            <div class="logo">CONEX <span>HotéisRIO</span></div>
+            <a href="#contato" class="cta-nav">Falar com Consultor</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container hero-content">
+            <h1>Sua Conexão Direta com a Hotelaria Carioca</h1>
+            <p>O braço institucional que conecta o mercado corporativo e oficial aos tomadores de decisão da hotelaria no Rio de Janeiro.</p>
+            <a href="#contato" class="cta-nav" style="padding: 15px 40px; font-size: 1.1rem;">Enviar Demanda</a>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <span>Por que usar o CONEX?</span>
+                <h2>Elimine Filtros e Agilize sua Resposta</h2>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <h3>⚡ Contato Direto</h3>
+                    <p>Sua demanda é encaminhada estrategicamente para o Diretor Comercial ou Gerente Geral do hotel.</p>
+                </div>
+                <div class="card">
+                    <h3>🤝 Selo Institucional</h3>
+                    <p>O HotéisRIO é a entidade oficial da hotelaria carioca, assegurando confiança e procedência.</p>
+                </div>
+                <div class="card">
+                    <h3>📍 Foco no Destino</h3>
+                    <p>Um serviço gratuito para impulsionar o Rio de Janeiro como destino de negócios e eventos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #fff;">
+        <div class="container">
+            <div class="section-header">
+                <span>Públicos Atendidos</span>
+                <h2>Agilidade para quem Decide</h2>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <h3>Consulados</h3>
+                    <p>Apoio oficial para delegações diplomáticas e grandes comitivas internacionais.</p>
+                </div>
+                <div class="card">
+                    <h3>Centros de Eventos</h3>
+                    <p>Conexão com a rede hoteleira para congressos de grande porte e tarifas negociadas.</p>
+                </div>
+                <div class="card">
+                    <h3>Empresas</h3>
+                    <p>Gestão estratégica de grupos corporativos (acima de 10 UHs) e visitas técnicas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="form-section">
+        <div class="container">
+            <div class="form-grid">
+                <div>
+                    <h2>Centralize sua Demanda de Grupos agora.</h2>
+                    <p style="margin: 20px 0; opacity: 0.8;">Preencha o formulário institucional. Nossa equipe encaminhará sua solicitação para os hotéis associados em tempo recorde.</p>
+                    <ul style="list-style: none; opacity: 0.8;">
+                        <li style="margin-bottom: 10px;">✅ Sem cobrança de taxas</li>
+                        <li style="margin-bottom: 10px;">✅ Sem comissões</li>
+                        <li style="margin-bottom: 10px;">✅ Institucional HotéisRIO</li>
+                    </ul>
+                </div>
+                <div class="form-container">
+                    <form id="conex-form">
+                        <div class="form-group">
+                            <label>Nome Completo / Empresa</label>
+                            <input type="text" id="company" placeholder="Ex: Consulado Geral da Itália" required>
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail Corporativo</label>
+                            <input type="email" id="email" placeholder="nome@empresa.com.br" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone / WhatsApp</label>
+                            <input type="tel" id="whatsapp" placeholder="+55 21 99999-9999" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Solicitação</label>
+                            <select id="subject" required>
+                                <option value="">Selecione...</option>
+                                <option value="Hospedagem de Grupos (> 10 UHs)">Hospedagem de Grupos (10+ UHs)</option>
+                                <option value="Tarifas para Eventos / Congressos">Tarifas para Eventos / Congressos</option>
+                                <option value="Visitas Técnicas (Hotéis Associados)">Visita Técnica / Inspeção</option>
+                                <option value="Relacionamento Institucional">Outro Assunto Institucional</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Detalhes da Demanda</label>
+                            <textarea id="description" rows="4" placeholder="Descreva brevemente sua necessidade (nº de pessoas, data, etc.)" required></textarea>
+                        </div>
+                        <button type="submit" id="submit-btn" class="btn-submit">Enviar para HotéisRIO</button>
+                    </form>
+                    <div id="success-msg" style="display: none; text-align: center; padding: 20px;">
+                        <h3 style="color: var(--navy);">Demanda Enviada!</h3>
+                        <p style="color: var(--text); font-size: 0.9rem; margin-top: 10px;">Nossa equipe institucional entrará em contato em breve.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supabase Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://nlccqtatcinukdnultat.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5sY2NxdGF0Y2ludWtkbnVsdGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NjM3MDIsImV4cCI6MjA5MDAzOTcwMn0.MEybyzHONPOqSl4hmG-EH5L_Z49CLCcFjvymZRncNNs';
+        
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const form = document.getElementById('conex-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const successMsg = document.getElementById('success-msg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Enviando...';
+
+            const formData = {
+                id: 'LP-' + Date.now().toString().slice(-8),
+                hotel_name: document.getElementById('company').value,
+                contact_email: document.getElementById('email').value,
+                contact_phone: document.getElementById('whatsapp').value,
+                category: [document.getElementById('subject').value],
+                description: document.getElementById('description').value,
+                status: 'Pendente',
+                date_opened: new Date().toISOString().split('T')[0],
+                region: 'Landing Page',
+                neighborhood: 'Site Oficial',
+                assigned_agency: 'CONEX Institucional'
+            };
+
+            const { error } = await supabase
+                .from('demands')
+                .insert([formData]);
+
+            if (error) {
+                console.error('Error:', error);
+                alert('Ocorreu um erro ao enviar sua demanda. Por favor, tente novamente.');
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Enviar para HotéisRIO';
+            } else {
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
+            }
+        });
+    </script>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 HotéisRIO — Sindicato dos Meios de Hospedagem do Município do Rio de Janeiro. <br>Iniciativa CONEX HotéisRIO.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
