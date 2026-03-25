@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Automation — CONEX HotéisRIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0a2e50;
+            --gold: #c5a059;
+            --ice: #f8fafd;
+            --text-dark: #333333;
+            --glass-bg: rgba(255, 255, 256, 0.9);
+            --shadow: 0 10px 40px rgba(10, 46, 80, 0.1);
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--ice); color: var(--text-dark); padding: 50px; }
+        .container { max-width: 1000px; margin: 0 auto; background: var(--glass-bg); padding: 60px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.4); }
+        header { text-align: center; margin-bottom: 50px; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; color: var(--navy); }
+        .badge { display: inline-block; background: var(--navy); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 20px; }
+        
+        .automation-section { margin-bottom: 60px; padding-bottom: 30px; border-bottom: 1px solid #eee; }
+        .automation-section:last-child { border-bottom: none; }
+        .grid-automation { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        
+        .email-card { background: #fff; border: 1px solid #eee; padding: 25px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--gold); }
+        .email-card h4 { color: var(--navy); font-size: 0.95rem; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .email-copy { font-size: 0.85rem; line-height: 1.5; color: #666; font-family: monospace; }
+        
+        .wa-box { background: #e7f3ef; border: 1px solid #d1e7dd; padding: 20px; border-radius: 12px; margin-top: 20px; display: flex; gap: 15px; align-items: flex-start; }
+        .wa-box i { color: #25d366; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">ESTRUTURA DE PÓS-CONVERSÃO</div>
+            <h1>📧 Lead Automation & Sequence Dashboard</h1>
+            <p style="opacity: 0.7;">Automação de leads institucional HotéisRIO: Formulários e Nutrição.</p>
+        </header>
+
+        <section class="automation-section">
+            <h2 style="margin-bottom: 20px;">01. Sequência de E-mails (Nurture)</h2>
+            <div class="email-card">
+                <h4>E-mail 01: Boas-vindas (T=0)</h4>
+                <div class="email-copy">
+                    Assunto: Sua solicitação hoteleira no Rio foi recebida — CONEX HotéisRIO<br><br>
+                    Olá, {{primeiro_nome}}. Recebemos sua demanda... Em breve os decisores dos hotéis entrarão em contato direto.
+                </div>
+            </div>
+            <div class="email-card">
+                <h4>E-mail 02: O Atalho (T+24h)</h4>
+                <div class="email-copy">
+                    Assunto: O atalho institucional para seu evento no Rio<br><br>
+                    Olá, {{primeiro_nome}}. Nossa ponte é institucional e direta. Sua demanda chega na mesa de quem decide condições diferenciadas.
+                </div>
+            </div>
+        </section>
+
+        <section class="automation-section">
+            <h2 style="margin-bottom: 20px;">02. Scripts WhatsApp</h2>
+            <div class="wa-box">
+                <i class="fab fa-whatsapp"></i>
+                <div style="font-size:0.9rem;">
+                    <strong>Primeiro Contato (Pós-Lead):</strong><br>
+                    "Olá, {{primeiro_nome}}! Sou da equipe institucional do **CONEX HotéisRIO**. Acabamos de receber sua solicitação para o grupo/evento da {{nome_empresa}}..."
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

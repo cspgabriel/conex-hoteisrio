@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICP Premium — CONEX HotéisRIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0a2e50;
+            --gold: #c5a059;
+            --sky: #0077c2;
+            --ice: #f8fafd;
+            --text-dark: #333333;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --shadow: 0 10px 30px rgba(10, 46, 80, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--ice);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 50px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--navy), var(--gold), var(--sky));
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--navy);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--gold);
+            display: inline-block;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+        }
+
+        .grid-9 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .dim-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-left: 4px solid var(--navy);
+            transition: transform 0.3s ease;
+        }
+
+        .dim-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .dim-num {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .dim-label {
+            font-weight: 600;
+            color: var(--navy);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .dim-value {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--navy);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .psych-box {
+            background: linear-gradient(135deg, var(--navy), #051629);
+            color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .psych-box h3 {
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--sky);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">HotéisRIO — Braço Institucional</div>
+            <h1>🎯 ICP Premium</h1>
+            <p class="subtitle">CONEX HotéisRIO: O Destino do Business</p>
+        </header>
+
+        <section class="section">
+            <h2 class="section-title">01. As 9 Dimensões do Cliente Ideal</h2>
+            <div class="grid-9">
+                <div class="dim-card">
+                    <span class="dim-num">#01</span>
+                    <span class="dim-label">Segmento</span>
+                    <span class="dim-value">B2B Corporativo, Diplomático e Eventos.</span>
+                </div>
+                <div class="dim-card">
+                    <span class="dim-num">#02</span>
+                    <span class="dim-label">Porte</span>
+                    <span class="dim-value">Médias e Grandes Empresas e Consulados.</span>
+                </div>
+                <div class="dim-card">
+                    <span class="dim-num">#03</span>
+                    <span class="dim-label">Cargo</span>
+                    <span class="dim-value">Travel Managers, RH e Secretários Diplomáticos.</span>
+                </div>
+                <div class="dim-card">
+                    <span class="dim-num">#04</span>
+                    <span class="dim-label">Localização</span>
+                    <span class="dim-value">Brasil (Focus SP/DF) e Exterior.</span>
+                </div>
+                <div class="dim-card">
+                    <span class="dim-num">#05</span>
+                    <span class="dim-label">Volume</span>
+                    <span class="dim-value">Grupos a partir de 10 UHs.</span>
+                </div>
+                <div class="dim-card">
+                    <span class="dim-num">#06</span>
+                    <span class="dim-label">Dor Principal</span>
+                    <span class="dim-value">Lentidão e Filtros Comerciais Excessivos.</span>
+                </div>
+                <div class="dim-card">
+                    <span class="dim-num">#07</span>
+                    <span class="dim-label">Critério de Compra</span>
+                    <span class="dim-value">Agilidade e Contato com o "Dono da Chave".</span>
+                </div>
+                <div class="dim-card">
+                    <span class="dim-num">#08</span>
+                    <span class="dim-label">Interesses</span>
+                    <span class="dim-value">Networking, Infraestrutura e Economia.</span>
+                </div>
+                <div class="dim-card">
+                    <span class="dim-num">#09</span>
+                    <span class="dim-label">Desafio</span>
+                    <span class="dim-value">Otimizar prospecção e confirmação de grupos.</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">02. Análise Psicográfica</h2>
+            <div class="psych-box">
+                <h3>Crenças e Valores</h3>
+                <p>Valorizam a autoridade institucional. Acreditam que o HotéisRIO é o selo de garantia para seus eventos no Rio. Têm aversão a atendentes sem poder de decisão. Buscam eficiência máxima no tempo de resposta corporativo.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">03. ICP Real vs. Aspiracional</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimensão</th>
+                        <th>Cenário Real (Hoje)</th>
+                        <th>Cenário Aspiracional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Público</strong></td>
+                        <td>Agências locais.</td>
+                        <td>Organizadores globais de congressos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Volume</strong></td>
+                        <td>Grupos esporádicos (10-15 UHs).</td>
+                        <td>Grandes grupos (50+ UHs).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frequência</strong></td>
+                        <td>Eventual / Demanda pontual.</td>
+                        <td>Parceria estrutural recorrente.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <footer>
+            <p>Gerado pelo Agente Antigravity para HotéisRIO — 2026</p>
+        </footer>
+    </div>
+</body>
+</html>

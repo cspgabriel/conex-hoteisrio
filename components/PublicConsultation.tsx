@@ -83,8 +83,8 @@ const PublicConsultation: React.FC = () => {
             alt="HotéisRIO" 
             className="h-24 mx-auto mb-6"
           />
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Consulta CONEX</h1>
-          <p className="text-slate-600">Acompanhe o status do seu pedido de conexão institucional</p>
+          <h1 className="text-3xl font-bold text-[#0a2e50] mb-2 uppercase tracking-tight">Consulta CONEX</h1>
+          <p className="text-slate-600 font-medium">Acompanhe o status do seu pedido de conexão institucional</p>
         </div>
 
         {error && (
@@ -98,23 +98,20 @@ const PublicConsultation: React.FC = () => {
           <div className="relative group">
             <input
               type="email"
-              placeholder="Digite seu E-mail cadastrado..."
+              placeholder="Digite seu E-mail corporativo cadastrado..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-12 pr-32 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none text-lg"
+              className="w-full pl-12 pr-32 py-5 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-4 focus:ring-blue-50 focus:border-[#0a2e50] transition-all outline-none text-lg placeholder:text-slate-300"
             />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-6 h-6 group-focus-within:text-blue-500 transition-colors" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-6 h-6 group-focus-within:text-[#0a2e50] transition-colors" />
             <button
               type="submit"
               disabled={loading}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-all disabled:opacity-50"
+              className="absolute right-3 top-1/2 -translate-y-1/2 bg-[#0a2e50] hover:bg-[#c5a059] text-white px-8 py-3 rounded-xl font-bold transition-all disabled:opacity-50 shadow-lg"
             >
-              {loading ? 'Buscando...' : 'Consultar'}
+              {loading ? '...' : 'Consultar'}
             </button>
           </div>
-          <p className="mt-3 text-xs text-slate-400 text-center">
-            Exemplo: seuemail@exemplo.com
-          </p>
         </form>
 
         <div className="space-y-6">
@@ -126,19 +123,19 @@ const PublicConsultation: React.FC = () => {
                 exit={{ opacity: 0 }}
                 className="flex justify-center py-12"
               >
-                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-10 h-10 border-4 border-[#0a2e50] border-t-transparent rounded-full animate-spin"></div>
               </motion.div>
             ) : searched && results.length === 0 ? (
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white p-8 rounded-2xl border border-slate-200 text-center shadow-sm"
+                className="bg-white p-12 rounded-[32px] border border-slate-100 text-center shadow-sm"
               >
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-8 h-8 text-slate-400" />
+                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Search className="w-10 h-10 text-slate-300" />
                 </div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-1">Nenhuma demanda encontrada</h3>
-                <p className="text-slate-500">Verifique se o e-mail digitado está correto e cadastrado no sistema.</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Nenhuma demanda encontrada</h3>
+                <p className="text-slate-500 text-sm">Verifique se o e-mail digitado está correto e cadastrado no sistema CONEX.</p>
               </motion.div>
             ) : (
               results.map((demand, index) => (
@@ -147,84 +144,83 @@ const PublicConsultation: React.FC = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"
+                  className="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden hover:shadow-xl transition-all border-b-4 border-b-[#c5a059]"
                 >
-                  <div className="p-6">
-                    <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+                  <div className="p-8">
+                    <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Protocolo</span>
-                          <h2 className="text-xl font-bold text-slate-900">{demand.id}</h2>
+                          <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">Protocolo Institucional</span>
                         </div>
-                        <div className="flex items-center gap-2 text-slate-500 text-sm">
-                          <Calendar className="w-4 h-4" />
-                          <span>Registrado em {new Date(demand.dateOpened).toLocaleDateString('pt-BR')}</span>
+                        <h2 className="text-3xl font-black text-[#0a2e50] tracking-tight">{demand.id}</h2>
+                        <div className="flex items-center gap-2 text-slate-400 text-xs font-bold mt-1 uppercase tracking-wider">
+                          <Calendar className="w-3 h-3" />
+                          <span>Aberto em {new Date(demand.dateOpened).toLocaleDateString('pt-BR')}</span>
                         </div>
                       </div>
-                      <div className={`flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold ${getStatusColor(demand.status)}`}>
+                      <div className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl border text-xs font-black uppercase tracking-widest shadow-sm ${getStatusColor(demand.status)}`}>
                         {getStatusIcon(demand.status)}
                         {demand.status}
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                      <div className="space-y-4">
-                        <div className="flex gap-3">
-                          <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <FileText className="w-5 h-5 text-slate-400" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                      <div className="space-y-6">
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 bg-[#f8fafd] rounded-2xl flex items-center justify-center flex-shrink-0 text-[#c5a059] border border-white shadow-sm">
+                            <FileText className="w-6 h-6" />
                           </div>
                           <div>
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-tight">Hotel</p>
-                            <p className="text-slate-900 font-medium">{demand.hotelName}</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Empresa / Hotel</p>
+                            <p className="text-[#0a2e50] font-black text-lg leading-tight">{demand.hotelName}</p>
                           </div>
                         </div>
-                        <div className="flex gap-3">
-                          <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <MapPin className="w-5 h-5 text-slate-400" />
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 bg-[#f8fafd] rounded-2xl flex items-center justify-center flex-shrink-0 text-[#c5a059] border border-white shadow-sm">
+                            <MapPin className="w-6 h-6" />
                           </div>
                           <div>
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-tight">Localização</p>
-                            <p className="text-slate-900 font-medium">{demand.neighborhood} - {demand.region}</p>
-                            {demand.address && <p className="text-sm text-slate-500">{demand.address}</p>}
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Origem / Destino</p>
+                            <p className="text-[#0a2e50] font-black">{demand.neighborhood} <span className="text-slate-300 mx-1">/</span> {demand.region}</p>
                           </div>
                         </div>
                       </div>
-                      <div className="space-y-4">
-                        <div className="flex gap-3">
-                          <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <Info className="w-5 h-5 text-slate-400" />
+                      <div className="space-y-6">
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 bg-[#f8fafd] rounded-2xl flex items-center justify-center flex-shrink-0 text-[#c5a059] border border-white shadow-sm">
+                            <Info className="w-6 h-6" />
                           </div>
                           <div>
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-tight">Responsável Interno</p>
-                            <p className="text-slate-900 font-medium">{demand.assignedAgency || 'Em análise'}</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Setor Responsável</p>
+                            <p className="text-[#0a2e50] font-black">{demand.assignedAgency || 'CONEX Institucional'}</p>
                           </div>
                         </div>
                         {demand.contactEmail && (
-                          <div className="flex gap-3">
-                            <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                              <Mail className="w-5 h-5 text-slate-400" />
+                          <div className="flex gap-4">
+                            <div className="w-12 h-12 bg-[#f8fafd] rounded-2xl flex items-center justify-center flex-shrink-0 text-[#c5a059] border border-white shadow-sm">
+                              <Mail className="w-6 h-6" />
                             </div>
                             <div>
-                              <p className="text-xs font-semibold text-slate-400 uppercase tracking-tight">E-mail de Contato</p>
-                              <p className="text-slate-900 font-medium">{demand.contactEmail}</p>
+                              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">E-mail Cadastrado</p>
+                              <p className="text-[#0a2e50] font-black">{demand.contactEmail}</p>
                             </div>
                           </div>
                         )}
                       </div>
                     </div>
 
-                    <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
-                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-tight mb-2">Descrição da Demanda</p>
-                      <p className="text-slate-700 text-sm leading-relaxed">{demand.description}</p>
+                    <div className="bg-[#f8fafd] rounded-[24px] p-6 border border-slate-100 mb-8">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Detalhamento da Solicitação</p>
+                      <p className="text-slate-600 text-sm leading-relaxed font-medium">{demand.description}</p>
                     </div>
 
                     {demand.status !== Status.RESOLVED && (
                       <button
                         onClick={() => handleRequestUpdate(demand)}
-                        className="w-full flex items-center justify-center gap-2 bg-blue-50 hover:bg-blue-100 text-blue-700 py-3 rounded-xl font-semibold transition-all border border-blue-200"
+                        className="w-full flex items-center justify-center gap-3 bg-[#0a2e50] hover:bg-[#c5a059] text-white py-4 rounded-2xl font-bold transition-all shadow-lg group"
                       >
-                        <Send className="w-4 h-4" />
-                        Enviar E-mail Solicitando Atualização
+                        <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                        Solicitar Atualização Estratégica
                       </button>
                     )}
                   </div>
@@ -235,11 +231,12 @@ const PublicConsultation: React.FC = () => {
         </div>
       </div>
       
-      <footer className="mt-auto pt-12 text-slate-400 text-sm text-center">
-        <p>&copy; {new Date().getFullYear()} HotéisRIO. Todos os direitos reservados.</p>
+      <footer className="mt-auto pt-20 pb-12 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] text-center">
+        <p>&copy; {new Date().getFullYear()} HotéisRIO — Iniciativa CONEX HotéisRIO</p>
       </footer>
     </div>
   );
 };
+
 
 export default PublicConsultation;

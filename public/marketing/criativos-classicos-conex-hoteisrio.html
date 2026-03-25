@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criativos Clássicos — CONEX HotéisRIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0a2e50;
+            --gold: #c5a059;
+            --ice: #f8fafd;
+            --text-dark: #333333;
+            --glass-bg: rgba(255, 255, 256, 0.9);
+            --shadow: 0 10px 40px rgba(10, 46, 80, 0.1);
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--ice); color: var(--text-dark); padding: 50px; }
+        .container { max-width: 1000px; margin: 0 auto; background: var(--glass-bg); padding: 60px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.4); }
+        header { text-align: center; margin-bottom: 50px; }
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; color: var(--navy); }
+        .badge { display: inline-block; background: var(--gold); color: #fff; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 20px; }
+        
+        .classic-section { margin-bottom: 60px; padding-bottom: 30px; border-bottom: 1px solid #eee; }
+        .classic-section:last-child { border-bottom: none; }
+        .classic-title { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .classic-title i { background: var(--navy); color: #fff; width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        
+        .linkedin-slides { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+        .slide { background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 8px; font-size: 0.8rem; text-align: center; color: var(--navy); aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .slide span { color: var(--gold); font-size: 0.7rem; margin-bottom: 5px; }
+        
+        .video-script { background: #051629; color: #fff; padding: 30px; border-radius: 12px; font-size: 0.9rem; margin-top: 15px; border-left: 5px solid var(--gold); }
+        .timestamp { color: var(--gold); font-weight: 700; margin-right: 15px; width: 80px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">PLANEJAMENTO DE MÍDIA — CANAIS CORPORATIVOS</div>
+            <h1>🏛️ Criativos Clássicos Dashboard</h1>
+            <p style="opacity: 0.7;">Estratégia multi-plataforma complementar para LinkedIn e YouTube.</p>
+        </header>
+
+        <section class="classic-section">
+            <div class="classic-title">
+                <i class="fab fa-linkedin-in"></i>
+                <h2>01. Carrossel LinkedIn (Estratégico)</h2>
+            </div>
+            <div class="linkedin-slides">
+                <div class="slide"><span>Slide 01</span>Fechar Grupos sem Intermediários</div>
+                <div class="slide"><span>Slide 02</span>Desafios B2B em 2026</div>
+                <div class="slide"><span>Slide 03</span>O inimigo: Tempo de Resposta</div>
+                <div class="slide"><span>Slide 04</span>Apresentando CONEX HotéisRIO</div>
+                <div class="slide"><span>Slide 05</span>Conexão com GGs e Diretores</div>
+            </div>
+        </section>
+
+        <section class="classic-section">
+            <div class="classic-title">
+                <i class="fas fa-video"></i>
+                <h2>02. Roteiro Institucional "A Ponte"</h2>
+            </div>
+            <div class="video-script">
+                <p><span class="timestamp">00-05s:</span> Drone panorâmico Orla do Rio (Premium).</p>
+                <p><span class="timestamp">05-15s:</span> "Para seu evento ter sucesso, tempo é o maior recurso."</p>
+                <p><span class="timestamp">15-25s:</span> "CONEX: O braço oficial de decisão hoteleira no Rio."</p>
+                <p><span class="timestamp">25-30s:</span> Logo e CTA: "Sua conexão oficial livre de taxas."</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -146,10 +146,38 @@ export const demandService = {
   },
 
   async sendAutomaticNotification(demand: Demand): Promise<void> {
-    console.log('Sending automatic notification (MOCK):', demand.id);
+    const message = `🚀 *Novo Lead CONEX HotéisRIO* 🚀
+    
+📌 *Protocolo:* ${demand.id}
+🏨 *Hotel/Empresa:* ${demand.hotelName}
+👤 *Solicitante:* ${demand.customFields?.['Responsável pelo Preenchimento'] || 'Não informado'}
+🏷️ *Categoria:* ${demand.category.join(', ')}
+📧 *E-mail:* ${demand.contactEmail}
+📱 *WhatsApp:* ${demand.contactPhone || 'Não informado'}
+
+📝 *Descrição:*
+${demand.description}
+
+---
+_Acesse o painel para gerenciar:_ http://localhost:5173/gestao`;
+
+    try {
+        await fetch('http://localhost:4004/notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                message,
+                groupName: 'Escritório HotéisRio',
+                adminPhone: '5521970222013' // Default Admin Placeholder
+            })
+        });
+    } catch (err) {
+        console.error('Failed to send WhatsApp notification', err);
+    }
   },
 
   async sendStatusUpdateNotification(demand: Demand, customSubject?: string, customBody?: string): Promise<void> {
+    // Similarly, we could send updates via WhatsApp here
     console.log('Sending status update notification (MOCK):', demand.id, customSubject || 'Status Updated');
   },
 };

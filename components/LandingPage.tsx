@@ -16,10 +16,10 @@ const LandingPage: React.FC = () => {
               CONEX <span className="text-[#c5a059]">HotéisRIO</span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Link to="/gestao" className="hidden sm:flex items-center gap-2 text-sm font-bold text-[#0a2e50] hover:text-[#0077c2] transition-colors">
-              <LogIn className="w-4 h-4" /> Acesso Restrito
-            </Link>
+          <div className="flex items-center gap-6">
+            <a href="/marketing/index-pipeline-conex-hoteisrio.html" target="_blank" className="hidden md:block text-[10px] font-black uppercase tracking-[0.2em] text-[#0a2e50] hover:text-[#c5a059] transition-colors">
+              Planejamento
+            </a>
             <Link to="/enviar" className="bg-[#0a2e50] text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-[#c5a059] transition-all shadow-lg hover:-translate-y-0.5">
               Enviar Demanda
             </Link>
@@ -153,9 +153,6 @@ const LandingPage: React.FC = () => {
           />
           <p className="text-sm mb-2">&copy; 2026 HotéisRIO — Sindicato dos Meios de Hospedagem do Município do Rio de Janeiro.</p>
           <p className="text-xs uppercase tracking-widest font-bold text-white/30">Iniciativa CONEX HotéisRIO — Conexão B2B e Turismo</p>
-          <div className="mt-8">
-             <Link to="/gestao" className="text-white/40 hover:text-white transition-colors text-xs font-medium border-b border-white/10 pb-1">Painel Administrativo Restrito</Link>
-          </div>
         </div>
       </footer>
     </div>
