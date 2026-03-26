@@ -59,6 +59,9 @@ const LandingPage: React.FC = () => {
             <Link to="/enviar" className="bg-[#c5a059] text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#0a2e50] transition-all shadow-2xl flex items-center justify-center gap-2 group">
               Centralizar Demanda <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
+            <Link to="/hospedagem" className="bg-white/20 backdrop-blur-md text-white border border-white/30 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white/30 transition-all flex items-center justify-center gap-2">
+              Hospedagem / Eventos
+            </Link>
             <Link to="/consultar" className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2">
               Consultar Status
             </Link>
