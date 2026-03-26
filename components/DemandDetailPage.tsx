@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Download, Building2, Calendar, FileText, Tag, Settings, User, Briefcase, Mail, Phone, UserCheck, ClipboardList } from 'lucide-react';
+import { ArrowLeft, Download, Building2, Calendar, FileText, Tag, Settings, User, Briefcase, Mail, Phone, UserCheck, ClipboardList, MapPin, Utensils, CreditCard, MessageSquare, BedDouble, Users } from 'lucide-react';
 import { Demand, Status } from '../types';
 import html2canvas from 'html2canvas';
 import FieldVisibilityModal, { FieldConfig } from './FieldVisibilityModal';
@@ -74,6 +74,32 @@ const DemandDetailPage: React.FC<DemandDetailPageProps> = ({ demand, onBack, hid
   const subjects = Array.isArray(demand.category) ? demand.category : [demand.category];
   const extraCustomFields = Object.entries(demand.customFields || {}).filter(([key]) => !['Responsavel pelo Preenchimento', 'Cargo', 'WhatsApp', 'Nome da Referencia'].includes(key));
 
+  // Detect if this demand came from the /hospedagem form
+  const isHospedagem = 'Tipo de Demanda' in (demand.customFields || {});
+
+  const cf = demand.customFields || {};
+
+  // Helper component for a field inside the hospedagem detail sections
+  const HField = ({ label, value }: { label: string; value?: string }) =>
+    value ? (
+      <div>
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{label}</p>
+        <p className="text-slate-800 text-sm font-medium break-words">{value}</p>
+      </div>
+    ) : null;
+
+  const HSection = ({ number, icon, title, children }: { number: string; icon: React.ReactNode; title: string; children: React.ReactNode }) => (
+    <div className="col-span-2 bg-slate-50 rounded-lg border border-slate-100 overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-2 bg-[#0a2e50] text-white">
+        <span className="w-6 h-6 bg-white/20 rounded flex items-center justify-center text-xs font-bold shrink-0">{number}</span>
+        <span className="flex items-center gap-1.5 text-sm font-bold">{icon}{title}</span>
+      </div>
+      <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {children}
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {!hiddenMode && (
@@ -104,7 +130,10 @@ const DemandDetailPage: React.FC<DemandDetailPageProps> = ({ demand, onBack, hid
             <div className="border-b-2 border-slate-800 pb-6 mb-8 flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-black text-blue-800 tracking-tight uppercase leading-tight">
-                  HOTÉISRIO <br /> <span className="text-xl text-slate-600 font-bold">Assessoria Jurídica</span>
+                  HOTÉISRIO <br />
+                  <span className="text-xl text-slate-600 font-bold">
+                    {isHospedagem ? 'Hospedagem de Grupos / CONEX' : 'Assessoria Jurídica'}
+                  </span>
                 </h1>
               </div>
               <div className="text-right">
@@ -114,34 +143,10 @@ const DemandDetailPage: React.FC<DemandDetailPageProps> = ({ demand, onBack, hid
             </div>
 
             <div className="grid grid-cols-2 gap-6 mb-8">
-              {fieldConfig.hotelInfo && (
-                <>
-                  <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Nome do hotel</label>
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
-                        <Building2 className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <div className="text-slate-900 font-bold text-lg">{demand.hotelName}</div>
-                        <div className="text-sm text-slate-500">{demand.contactEmail || 'Email não informado'}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Responsável pelo preenchimento</label>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-slate-800"><User className="w-4 h-4 text-blue-500" /> {responsibleName || 'Não informado'}</div>
-                      <div className="flex items-center gap-2 text-slate-600"><Briefcase className="w-4 h-4 text-blue-500" /> {responsibleRole || 'Cargo não informado'}</div>
-                      <div className="flex items-center gap-2 text-slate-600"><Phone className="w-4 h-4 text-blue-500" /> {whatsapp || 'WhatsApp não informado'}</div>
-                    </div>
-                  </div>
-                </>
-              )}
-
+              {/* ── Common: Status badge + date ─────────────────────────── */}
               {fieldConfig.date && (
                 <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Adicionado em</label>
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Recebido em</label>
                   <div className="flex items-center gap-3">
                     <Calendar className="w-5 h-5 text-blue-500" />
                     <span className="text-slate-900 font-bold text-lg">{new Date(demand.dateOpened).toLocaleDateString('pt-BR')}</span>
@@ -149,28 +154,29 @@ const DemandDetailPage: React.FC<DemandDetailPageProps> = ({ demand, onBack, hid
                 </div>
               )}
 
-              {/* Attachments Section */}
+              {fieldConfig.status && (
+                <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Status</label>
+                  <div className="mb-3">
+                    <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-bold border shadow-sm ${getStatusColor(demand.status)}`}>{demand.status}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-slate-700"><UserCheck className="w-4 h-4 text-blue-500" /> {demand.assignedAgency || 'Não informado'}</div>
+                </div>
+              )}
+
+              {/* ── Attachments ─────────────────────────────────────────── */}
               {demand.attachments && demand.attachments.length > 0 && (
                 <div className="col-span-2">
                   <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Anexos / Fotos ({demand.attachments.length})</label>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {demand.attachments.map((attachment, idx) => {
-                      // Handle both old format (string) and new format (object)
                       const url = typeof attachment === 'string' ? attachment : attachment.url;
                       const name = typeof attachment === 'string' ? `Anexo ${idx + 1}` : attachment.name;
                       const isImage = url.match(/\.(jpeg|jpg|gif|png|webp|svg)(\?.*)?$/i) || url.includes('data:image');
-                      
                       return (
                         <div key={idx} className="group relative bg-slate-100 rounded-lg overflow-hidden border border-slate-200 aspect-square flex items-center justify-center">
                           {isImage ? (
-                            <img 
-                              src={url} 
-                              alt={name} 
-                              className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
-                              }}
-                            />
+                            <img src={url} alt={name} className="w-full h-full object-cover transition-transform group-hover:scale-105" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                           ) : (
                             <div className="flex flex-col items-center gap-2 p-4 text-center">
                               <FileText className="w-8 h-8 text-slate-400" />
@@ -178,15 +184,7 @@ const DemandDetailPage: React.FC<DemandDetailPageProps> = ({ demand, onBack, hid
                             </div>
                           )}
                           {typeof attachment !== 'string' && attachment.url && (
-                            <a 
-                              href={attachment.url} 
-                              download={attachment.name}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold"
-                            >
-                              Baixar
-                            </a>
+                            <a href={attachment.url} download={attachment.name} target="_blank" rel="noopener noreferrer" className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-bold">Baixar</a>
                           )}
                         </div>
                       );
@@ -195,57 +193,150 @@ const DemandDetailPage: React.FC<DemandDetailPageProps> = ({ demand, onBack, hid
                 </div>
               )}
 
-              {fieldConfig.status && (
-                <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Status e responsável pela tarefa</label>
-                  <div className="mb-3">
-                    <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-bold border shadow-sm ${getStatusColor(demand.status)}`}>{demand.status}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-slate-700"><UserCheck className="w-4 h-4 text-blue-500" /> {demand.assignedAgency || 'Não informado'}</div>
-                </div>
-              )}
-
-              {fieldConfig.category && (
-                <div className="col-span-2 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Categoria da demanda</label>
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <Tag className="w-5 h-5 text-blue-500 shrink-0" />
-                    {subjects.map((subject, index) => (
-                      <span key={`${subject}-${index}`} className="bg-white border border-slate-200 px-3 py-1 rounded-full text-slate-800 font-bold text-sm shadow-sm">{subject}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {fieldConfig.description && (
-                <div className="col-span-2 bg-slate-50 p-6 rounded-lg border border-slate-100 min-h-[220px]">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">Breve descrição da solicitação</label>
-                  <div className="flex items-start gap-3">
-                    <FileText className="w-5 h-5 text-slate-400 mt-1 shrink-0" />
-                    <p className="text-slate-700 text-base leading-relaxed whitespace-pre-wrap break-words text-justify">{demand.description}</p>
-                  </div>
-                </div>
-              )}
-
-              {fieldConfig.observations && (
+              {/* ══ HOSPEDAGEM demand: structured sections ══════════════════ */}
+              {isHospedagem ? (
                 <>
-                  <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Email</label>
-                    <div className="flex items-center gap-2 text-slate-700"><Mail className="w-4 h-4 text-blue-500" /> {demand.contactEmail || 'Não informado'}</div>
-                  </div>
-                  <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Nome da referência</label>
-                    <div className="flex items-center gap-2 text-slate-700"><ClipboardList className="w-4 h-4 text-blue-500" /> {referenceName || 'Não informado'}</div>
-                  </div>
+                  {/* Section 1 – Dados do Solicitante */}
+                  <HSection number="1" icon={<User className="w-4 h-4" />} title="Dados do Solicitante">
+                    <HField label="Nome completo" value={cf['Nome Completo']} />
+                    <HField label="Empresa / Instituição" value={cf['Empresa / Instituição']} />
+                    <HField label="Tipo de instituição" value={cf['Tipo de Instituição']} />
+                    <HField label="E-mail" value={demand.contactEmail} />
+                    <HField label="Telefone / WhatsApp" value={demand.contactPhone} />
+                  </HSection>
+
+                  {/* Section 2 – Tipo de Demanda */}
+                  <HSection number="2" icon={<FileText className="w-4 h-4" />} title="Tipo de Demanda">
+                    <HField label="Tipo de demanda" value={cf['Tipo de Demanda']} />
+                  </HSection>
+
+                  {/* Section 3 – Informações da Hospedagem (when applicable) */}
+                  {(cf['Check-in'] || cf['Quantidade de UHs']) && (
+                    <HSection number="3" icon={<BedDouble className="w-4 h-4" />} title="Informações da Hospedagem">
+                      <HField label="Check-in" value={cf['Check-in']} />
+                      <HField label="Check-out" value={cf['Check-out']} />
+                      <HField label="Nº de noites" value={cf['Número de Noites']} />
+                      <HField label="Qtd. de UH's" value={cf['Quantidade de UHs']} />
+                      <HField label="Single" value={cf['Single']} />
+                      <HField label="Duplo (casal)" value={cf['Duplo']} />
+                      <HField label="Twin (2 solteiros)" value={cf['Twin']} />
+                      <HField label="Triplo" value={cf['Triplo']} />
+                    </HSection>
+                  )}
+
+                  {/* Section 4 – Perfil, Localização e Categoria */}
+                  <HSection number="4" icon={<MapPin className="w-4 h-4" />} title="Perfil, Localização e Categoria">
+                    <HField label="Nacionalidade predominante" value={cf['Nacionalidade']} />
+                    <HField label="Perfil do grupo" value={cf['Perfil do Grupo']} />
+                    <HField label="Categoria de hotel" value={cf['Categoria de Hotel']} />
+                    <HField label="Localização de preferência" value={cf['Localização de Preferência']} />
+                  </HSection>
+
+                  {/* Section 5 – Espaços e Infraestrutura (when applicable) */}
+                  {cf['Necessita Sala de Eventos'] && (
+                    <HSection number="5" icon={<Users className="w-4 h-4" />} title="Espaços e Infraestrutura">
+                      <HField label="Necessita sala de eventos" value={cf['Necessita Sala de Eventos']} />
+                      <HField label="Data(s) do evento" value={cf['Data(s) do Evento']} />
+                      <HField label="Horário de uso" value={cf['Horário de Uso']} />
+                      <HField label="Nº de participantes" value={cf['Número de Participantes']} />
+                      <HField label="Formato da sala (setup)" value={cf['Formato da Sala']} />
+                      <HField label="Equipamentos" value={cf['Equipamentos']} />
+                    </HSection>
+                  )}
+
+                  {/* Section 6 – A&B */}
+                  <HSection number="6" icon={<Utensils className="w-4 h-4" />} title="Alimentos e Bebidas (A&B)">
+                    <HField label="Serviços desejados" value={cf['Serviços A&B']} />
+                    <div className="sm:col-span-2">
+                      <HField label="Restrições / Observações alimentares" value={cf['Restrições Alimentares']} />
+                    </div>
+                  </HSection>
+
+                  {/* Section 7 – Pagamento */}
+                  <HSection number="7" icon={<CreditCard className="w-4 h-4" />} title="Responsabilidade de Pagamento">
+                    <div className="sm:col-span-3">
+                      <HField label="Política de pagamento" value={cf['Política de Pagamento']} />
+                    </div>
+                  </HSection>
+
+                  {/* Section 8 – Observações */}
+                  {demand.description && (
+                    <HSection number="8" icon={<MessageSquare className="w-4 h-4" />} title="Observações Gerais">
+                      <div className="sm:col-span-3">
+                        <p className="text-slate-800 text-sm whitespace-pre-wrap break-words">{demand.description}</p>
+                      </div>
+                    </HSection>
+                  )}
+                </>
+              ) : (
+                <>
+                  {/* ══ STANDARD demand: original rendering ════════════════ */}
+                  {fieldConfig.hotelInfo && (
+                    <>
+                      <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Nome do hotel</label>
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 bg-blue-50 rounded-lg text-blue-600"><Building2 className="w-5 h-5" /></div>
+                          <div>
+                            <div className="text-slate-900 font-bold text-lg">{demand.hotelName}</div>
+                            <div className="text-sm text-slate-500">{demand.contactEmail || 'Email não informado'}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Responsável pelo preenchimento</label>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-slate-800"><User className="w-4 h-4 text-blue-500" /> {responsibleName || 'Não informado'}</div>
+                          <div className="flex items-center gap-2 text-slate-600"><Briefcase className="w-4 h-4 text-blue-500" /> {responsibleRole || 'Cargo não informado'}</div>
+                          <div className="flex items-center gap-2 text-slate-600"><Phone className="w-4 h-4 text-blue-500" /> {whatsapp || 'WhatsApp não informado'}</div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {fieldConfig.category && (
+                    <div className="col-span-2 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                      <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Categoria da demanda</label>
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <Tag className="w-5 h-5 text-blue-500 shrink-0" />
+                        {subjects.map((subject, index) => (
+                          <span key={`${subject}-${index}`} className="bg-white border border-slate-200 px-3 py-1 rounded-full text-slate-800 font-bold text-sm shadow-sm">{subject}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {fieldConfig.description && (
+                    <div className="col-span-2 bg-slate-50 p-6 rounded-lg border border-slate-100 min-h-[220px]">
+                      <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">Breve descrição da solicitação</label>
+                      <div className="flex items-start gap-3">
+                        <FileText className="w-5 h-5 text-slate-400 mt-1 shrink-0" />
+                        <p className="text-slate-700 text-base leading-relaxed whitespace-pre-wrap break-words text-justify">{demand.description}</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {fieldConfig.observations && (
+                    <>
+                      <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Email</label>
+                        <div className="flex items-center gap-2 text-slate-700"><Mail className="w-4 h-4 text-blue-500" /> {demand.contactEmail || 'Não informado'}</div>
+                      </div>
+                      <div className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Nome da referência</label>
+                        <div className="flex items-center gap-2 text-slate-700"><ClipboardList className="w-4 h-4 text-blue-500" /> {referenceName || 'Não informado'}</div>
+                      </div>
+                    </>
+                  )}
+
+                  {fieldConfig.extraInfo && extraCustomFields.map(([key, value]) => (
+                    <div key={key} className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                      <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">{key}</label>
+                      <p className="text-slate-800 whitespace-pre-wrap break-words">{String(value || '')}</p>
+                    </div>
+                  ))}
                 </>
               )}
-
-              {fieldConfig.extraInfo && extraCustomFields.map(([key, value]) => (
-                <div key={key} className="col-span-2 sm:col-span-1 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">{key}</label>
-                  <p className="text-slate-800 whitespace-pre-wrap break-words">{String(value || '')}</p>
-                </div>
-              ))}
             </div>
 
             <div className="mt-12 pt-6 border-t-2 border-slate-100 flex justify-between items-end">
@@ -255,7 +346,9 @@ const DemandDetailPage: React.FC<DemandDetailPageProps> = ({ demand, onBack, hid
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></div>
-                <span className="text-sm font-bold text-slate-700">Assessoria Jurídica HotéisRIO</span>
+                <span className="text-sm font-bold text-slate-700">
+                  {isHospedagem ? 'CONEX HotéisRIO' : 'Assessoria Jurídica HotéisRIO'}
+                </span>
               </div>
             </div>
           </div>
