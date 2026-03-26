@@ -37,6 +37,7 @@ import CsvMappingModal from './components/CsvMappingModal';
 import PublicConsultation from './components/PublicConsultation';
 import PublicDemandForm from './components/PublicDemandForm';
 import PublicDemandOrderForm from './components/PublicDemandOrderForm';
+import HospedagemGruposForm from './components/HospedagemGruposForm';
 import LoginPage from './components/LoginPage';
 import YearSummary from './components/YearSummary';
 import EmailMarketingPage from './components/EmailMarketingPage';
@@ -752,6 +753,7 @@ const App: React.FC = () => {
         <Route path="/consultar" element={<PublicConsultation />} />
         <Route path="/enviar" element={<PublicDemandForm />} />
         <Route path="/ordem-publica" element={<PublicDemandOrderForm />} />
+        <Route path="/hospedagem" element={<HospedagemGruposForm />} />
         
         <Route 
           path="/gestao" 
