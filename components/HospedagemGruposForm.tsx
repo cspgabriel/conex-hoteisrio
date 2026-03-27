@@ -372,7 +372,9 @@ const HospedagemGruposForm: React.FC = () => {
       };
 
       await demandService.add(newDemand);
-      await demandService.sendAutomaticNotification(newDemand);
+      
+      // Fire and forget notification
+      demandService.sendAutomaticNotification(newDemand).catch(() => {});
 
       setProtocol(newId);
       setSubmitted(true);

@@ -137,17 +137,34 @@ export const demandService = {
        nextDemand.id = `CX-${Date.now()}`;
     }
     
-    const { data, error } = await supabase
-      .from(TABLE_NAME)
-      .upsert([toDB(nextDemand)])
-      .select();
+    console.log('[SISTEMA] Iniciando salvamento no Supabase:', nextDemand.id);
     
-    if (error) {
-       console.error('Error adding demand:', error);
-       throw error;
+    try {
+      const dbData = toDB(nextDemand);
+      console.log('[SISTEMA] Dados normalizados para DB:', dbData.id);
+
+      // Race against a 15s timeout to avoid hanging UI
+      const result = await Promise.race([
+        supabase.from(TABLE_NAME).upsert([dbData]).select(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED')), 15000))
+      ]) as any;
+      
+      const { data, error } = result;
+      
+      if (error) {
+         console.error('[SISTEMA-ERRO] Falha no upsert Supabase:', error);
+         throw error;
+      }
+      
+      console.log('[SISTEMA] Salvamento concluído com sucesso!');
+      return data && data[0] ? fromDB(data[0]) : nextDemand;
+    } catch (err) {
+      if (err.message === 'TIMEOUT_EXCEEDED') {
+        throw new Error('O sistema está demorando muito para responder. Por favor, tente novamente ou verifique sua conexão.');
+      }
+      console.error('[SISTEMA-CRÍTICO] Exceção ao salvar no Supabase:', err);
+      throw err;
     }
-    
-    return data && data[0] ? fromDB(data[0]) : nextDemand;
   },
 
   async delete(id: string): Promise<void> {
@@ -178,7 +195,7 @@ export const demandService = {
     
 📌 *Protocolo:* ${demand.id}
 🏨 *Hotel/Empresa:* ${demand.hotelName}
-👤 *Solicitante:* ${demand.customFields?.['Responsável pelo Preenchimento'] || 'Não informado'}
+👤 *Solicitante:* ${demand.fullName || demand.customFields?.['Nome Completo'] || 'Não informado'}
 🏷️ *Categoria:* ${demand.category.join(', ')}
 📧 *E-mail:* ${demand.contactEmail}
 📱 *WhatsApp:* ${demand.contactPhone || 'Não informado'}
@@ -187,22 +204,28 @@ export const demandService = {
 ${demand.description}
 
 ---
-_Acesse o painel para gerenciar:_ http://localhost:5173/gestao`;
+_Acesse o painel para gerenciar:_ https://conex-hoteisrio.vercel.app/gestao`;
 
+    // FIRE AND FORGET - Do not let this block the UI
     try {
-        // Only try to notify if we can reach it, but don't let it block the submission
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+
         fetch('http://localhost:3005/notify-conex', {
             method: 'POST',
-            mode: 'no-cors', // Avoid preflight issues with localhost
+            mode: 'no-cors', 
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 message,
                 groupName: 'Escritório HotéisRio',
                 adminPhone: '5521970222013'
-            })
-        }).catch(e => console.log('Local bot notification skipped (offline/prod)'));
+            }),
+            signal: controller.signal
+        })
+        .then(() => clearTimeout(timeoutId))
+        .catch(() => {/* silent skip */});
     } catch (err) {
-        console.warn('Silent skip notification:', err.message);
+        // Silente failure for notifications
     }
   },
 

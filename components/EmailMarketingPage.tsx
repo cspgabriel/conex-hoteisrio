@@ -85,7 +85,7 @@ const EmailMarketingPage: React.FC = () => {
     return { total, resolved, rate };
   }, [q1Demands]);
 
-  const PUBLIC_SUBMISSION_URL = (import.meta.env.VITE_PUBLIC_URL || window.location.origin).replace(/\/$/, '') + '/enviar';
+  const PUBLIC_SUBMISSION_URL = (import.meta.env.VITE_PUBLIC_URL || window.location.origin).replace(/\/$/, '') + '/hospedagem';
   const PUBLIC_CONSULTATION_URL = (import.meta.env.VITE_PUBLIC_URL || window.location.origin).replace(/\/$/, '') + '/consultar';
 
   const buildOutlookHtml = (t: Template) => {

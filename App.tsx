@@ -28,7 +28,6 @@ import { getLegalSeedDemands, LEGAL_SEED_VERSION } from './services/legalSeed';
 import { demandService } from './services/demandService';
 import StatCard from './components/StatCard';
 import ChartsSection from './components/ChartsSection';
-import DemandModal from './components/DemandModal';
 import DemandManagement from './components/DemandManagement';
 import DemandDetailPage from './components/DemandDetailPage';
 import EmailModal from './components/EmailModal';
@@ -36,7 +35,6 @@ import EditDemandModal from './components/EditDemandModal';
 import FilteredDemandListModal from './components/FilteredDemandListModal';
 import CsvMappingModal from './components/CsvMappingModal';
 import PublicConsultation from './components/PublicConsultation';
-import PublicDemandForm from './components/PublicDemandForm';
 import PublicDemandOrderForm from './components/PublicDemandOrderForm';
 import HospedagemGruposForm from './components/HospedagemGruposForm';
 import LoginPage from './components/LoginPage';
@@ -51,7 +49,6 @@ const Dashboard: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const [currentView, setCurrentView] = useState<'dashboard' | 'management' | 'detail' | 'edit' | 'release'>('dashboard');
   const [previousView, setPreviousView] = useState<'dashboard' | 'management'>('dashboard'); // To return correctly
   const [editReturnView, setEditReturnView] = useState<'dashboard' | 'management'>('management');
-  const [isModalOpen, setIsModalOpen] = useState(false);
   
   // Dashboard Filters
   const [monthFilter, setMonthFilter] = useState<string>('ALL');
@@ -83,7 +80,7 @@ const Dashboard: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
 
   // Use environment variable for public URL if available, otherwise use current origin
   const PUBLIC_CONSULTATION_URL = (import.meta.env.VITE_PUBLIC_URL || window.location.origin).replace(/\/$/, '') + '/consultar';
-  const PUBLIC_SUBMISSION_URL = (import.meta.env.VITE_PUBLIC_URL || window.location.origin).replace(/\/$/, '') + '/enviar';
+  const PUBLIC_SUBMISSION_URL = (import.meta.env.VITE_PUBLIC_URL || window.location.origin).replace(/\/$/, '') + '/hospedagem';
 
   // URL Logo restored
   const LOGO_URL = "https://sindhoteisrj.com.br/wp-content/uploads/2020/04/logo-hoteisrio-azul-fundo-transparente-178x171-1.png";
@@ -682,7 +679,7 @@ const Dashboard: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
                   O sistema gerencia solicitações de hospedagem, eventos e visitas técnicas facilitando a ponte direta entre stakeholders e os hotéis associados.
                 </p>
                 <button 
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => window.open('/hospedagem', '_blank')}
                   className="w-full max-w-xs bg-white text-blue-800 px-6 py-4 rounded-lg font-bold shadow-lg transition-all transform hover:scale-105 hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer border border-blue-100 hover:bg-blue-50"
                 >
                   <PlusCircle className="w-5 h-5" />
@@ -705,10 +702,6 @@ const Dashboard: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
       </main>
 
       {/* Modals */}
-      <DemandModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-      />
 
       <EmailModal
         demand={emailDemand}
@@ -752,9 +745,8 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/consultar" element={<PublicConsultation />} />
-        <Route path="/enviar" element={<PublicDemandForm />} />
-        <Route path="/ordem-publica" element={<PublicDemandOrderForm />} />
         <Route path="/hospedagem" element={<HospedagemGruposForm />} />
+        <Route path="/ordem-publica" element={<PublicDemandOrderForm />} />
         
         <Route 
           path="/gestao" 
