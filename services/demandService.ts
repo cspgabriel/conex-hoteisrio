@@ -190,17 +190,19 @@ ${demand.description}
 _Acesse o painel para gerenciar:_ http://localhost:5173/gestao`;
 
     try {
-        await fetch('http://localhost:4004/notify', {
+        // Only try to notify if we can reach it, but don't let it block the submission
+        fetch('http://localhost:3005/notify-conex', {
             method: 'POST',
+            mode: 'no-cors', // Avoid preflight issues with localhost
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 message,
                 groupName: 'Escritório HotéisRio',
-                adminPhone: '5521970222013' // Default Admin Placeholder
+                adminPhone: '5521970222013'
             })
-        });
+        }).catch(e => console.log('Local bot notification skipped (offline/prod)'));
     } catch (err) {
-        console.error('Failed to send WhatsApp notification', err);
+        console.warn('Silent skip notification:', err.message);
     }
   },
 
