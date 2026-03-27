@@ -3,6 +3,7 @@ export enum Status {
   IN_PROGRESS = 'Em Negociação',
   DELAYED = 'Atrasada / Sem Resposta',
   PARTIAL = 'Parcialmente Atendida',
+  RESOLVED = 'Atendida',
 }
 
 export enum Category {

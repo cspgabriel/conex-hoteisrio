@@ -18,7 +18,8 @@ import {
   ExternalLink,
   Copy,
   Check,
-  ArrowLeft
+  ArrowLeft,
+  Plus
 } from 'lucide-react';
 import { Demand, Status } from './types';
 import CATEGORIES from './services/categories';
