@@ -43,25 +43,53 @@ const toDB = (d: Demand) => ({
   custom_fields: d.customFields || {}
 });
 
-const fromDB = (d: any): Demand => ({
-  id: d.id,
-  hotelName: d.hotel_name,
-  region: d.region,
-  neighborhood: d.neighborhood,
-  address: d.address,
-  contactEmail: d.contact_email,
-  contactPhone: d.contact_phone,
-  category: d.category || [],
-  description: d.description,
-  status: d.status as Status,
-  dateOpened: d.date_opened,
-  dateResolved: d.date_resolved,
-  assignedAgency: d.assigned_agency,
-  lat: d.lat,
-  lng: d.lng,
-  attachments: d.attachments || [],
-  customFields: d.custom_fields || {}
-});
+const fromDB = (d: any): Demand => {
+  const cf = d.custom_fields || {};
+  return {
+    id: d.id,
+    hotelName: d.hotel_name,
+    region: d.region,
+    neighborhood: d.neighborhood,
+    address: d.address,
+    contactEmail: d.contact_email,
+    contactPhone: d.contact_phone,
+    category: d.category || [],
+    description: d.description,
+    status: d.status as Status,
+    dateOpened: d.date_opened,
+    dateResolved: d.date_resolved,
+    assignedAgency: d.assigned_agency,
+    lat: d.lat,
+    lng: d.lng,
+    attachments: d.attachments || [],
+    
+    // Reconstitute typed fields from custom_fields
+    fullName: cf.fullName,
+    company: cf.company,
+    institutionType: cf.institutionType,
+    demandType: cf.demandType,
+    checkIn: cf.checkIn,
+    checkOut: cf.checkOut,
+    numNights: cf.numNights,
+    numUHs: cf.numUHs,
+    roomConfig: cf.roomConfig,
+    nationality: cf.nationality,
+    groupProfile: cf.groupProfile,
+    hotelCategory: cf.hotelCategory,
+    preferredLocation: cf.preferredLocation,
+    needsEventRoom: cf.needsEventRoom,
+    eventDates: cf.eventDates,
+    eventTime: cf.eventTime,
+    numParticipants: cf.numParticipants,
+    roomSetup: cf.roomSetup,
+    basicEquipment: cf.basicEquipment,
+    abServices: cf.abServices,
+    foodRestrictions: cf.foodRestrictions,
+    paymentPolicy: cf.paymentPolicy,
+    
+    customFields: cf
+  };
+};
 
 export const demandService = {
   async getAll(): Promise<Demand[]> {

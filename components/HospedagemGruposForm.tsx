@@ -153,7 +153,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ number, title, icon }) =>
 // ─── Form State ───────────────────────────────────────────────────────────────
 
 const DEMAND_TYPES = {
-  GROUP: "Grupo (acima de 10 UH's)",
+  GROUP: "Grupo (acima de 10 UH’s)",
   EVENT: 'Evento / Uso de salão (sem hospedagem)',
   GROUP_EVENT: 'Grupo + Evento',
   SITE_INSPECTION: 'Visita técnica (site inspection)',
@@ -307,7 +307,68 @@ const HospedagemGruposForm: React.FC = () => {
         status: Status.OPEN,
         dateOpened: today,
         assignedAgency: 'CONEX HotéisRIO',
-        customFields,
+        
+        // Spec Fields
+        fullName: formData.nomeCompleto,
+        company: formData.empresa,
+        institutionType: institutionType,
+        demandType: demandType,
+        checkIn: formData.checkin,
+        checkOut: formData.checkout,
+        numNights: formData.numeroNoites,
+        numUHs: formData.quantidadeUHs,
+        roomConfig: {
+          single: formData.qtdSingle,
+          double: formData.qtdDuplo,
+          twin: formData.qtdTwin,
+          triple: formData.qtdTriplo,
+        },
+        nationality: formData.nacionalidade,
+        groupProfile: formData.perfilGrupo,
+        hotelCategory: formData.categoriaHotel,
+        preferredLocation: formData.localizacaoPreferencia,
+        needsEventRoom: formData.precisaSala,
+        eventDates: formData.datasSala,
+        eventTime: formData.horarioUsoInicio && formData.horarioUsoFim
+          ? `${formData.horarioUsoInicio} às ${formData.horarioUsoFim}`
+          : '',
+        numParticipants: formData.numeroParticipantes,
+        roomSetup: formData.formatoSala,
+        basicEquipment: formData.equipamentos,
+        abServices: formData.servicosAB,
+        foodRestrictions: formData.restricoesAlimentares,
+        paymentPolicy: formData.politicaPagamento,
+        
+        // Maintain compatibility with customFields for detail page rendering
+        customFields: {
+          'Nome Completo': formData.nomeCompleto,
+          'Empresa / Instituição': formData.empresa,
+          'Tipo de Instituição': institutionType,
+          'Tipo de Demanda': demandType,
+          'Check-in': formData.checkin,
+          'Check-out': formData.checkout,
+          'Número de Noites': formData.numeroNoites,
+          'Quantidade de UHs': formData.quantidadeUHs,
+          'Single': formData.qtdSingle,
+          'Duplo': formData.qtdDuplo,
+          'Twin': formData.qtdTwin,
+          'Triplo': formData.qtdTriplo,
+          'Nacionalidade': formData.nacionalidade,
+          'Perfil do Grupo': formData.perfilGrupo,
+          'Categoria de Hotel': formData.categoriaHotel,
+          'Localização de Preferência': formData.localizacaoPreferencia,
+          'Necessita Sala de Eventos': formData.precisaSala,
+          'Data(s) do Evento': formData.datasSala,
+          'Horário de Uso': formData.horarioUsoInicio && formData.horarioUsoFim
+            ? `${formData.horarioUsoInicio} às ${formData.horarioUsoFim}`
+            : '',
+          'Número de Participantes': formData.numeroParticipantes,
+          'Formato da Sala': formData.formatoSala,
+          'Equipamentos': formData.equipamentos.join(', '),
+          'Serviços A&B': formData.servicosAB.join(', '),
+          'Restrições Alimentares': formData.restricoesAlimentares,
+          'Política de Pagamento': formData.politicaPagamento,
+        },
       };
 
       await demandService.add(newDemand);
@@ -574,7 +635,7 @@ const HospedagemGruposForm: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className={labelClass}>Qtd. de UH's</label>
+                    <label className={labelClass}>Quantidade de apartamentos (UH’s)</label>
                     <input
                       type="number"
                       name="quantidadeUHs"
@@ -698,7 +759,7 @@ const HospedagemGruposForm: React.FC = () => {
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
-                          <label className={labelClass}>Data(s) do evento</label>
+                          <label className={labelClass}>Data(s)</label>
                           <input
                             type="text"
                             name="datasSala"
@@ -709,7 +770,7 @@ const HospedagemGruposForm: React.FC = () => {
                           />
                         </div>
                         <div>
-                          <label className={labelClass}>Início do uso</label>
+                          <label className={labelClass}>Horário de uso (Início)</label>
                           <input
                             type="time"
                             name="horarioUsoInicio"
@@ -719,7 +780,7 @@ const HospedagemGruposForm: React.FC = () => {
                           />
                         </div>
                         <div>
-                          <label className={labelClass}>Fim do uso</label>
+                          <label className={labelClass}>Horário de uso (Fim)</label>
                           <input
                             type="time"
                             name="horarioUsoFim"

@@ -37,6 +37,34 @@ export interface Demand {
   assignedAgency: string; // Will use this as "Responsável"
   lat?: number;
   lng?: number;
+  // Hospedagem / Eventos Specific Fields
+  fullName?: string;
+  company?: string;
+  institutionType?: string;
+  demandType?: string;
+  checkIn?: string;
+  checkOut?: string;
+  numNights?: string;
+  numUHs?: string;
+  roomConfig?: {
+    single?: string;
+    double?: string;
+    twin?: string;
+    triple?: string;
+  };
+  nationality?: string;
+  groupProfile?: string;
+  hotelCategory?: string;
+  preferredLocation?: string;
+  needsEventRoom?: string;
+  eventDates?: string;
+  eventTime?: string;
+  numParticipants?: string;
+  roomSetup?: string;
+  basicEquipment?: string[];
+  abServices?: string[];
+  foodRestrictions?: string;
+  paymentPolicy?: string;
   attachments?: Array<{
     name: string;
     url: string;
