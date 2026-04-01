@@ -11,6 +11,7 @@ import {
   CheckCircle2, 
   Clock, 
   PlusCircle,
+  Plus,
   ListFilter,
   CalendarDays,
   Filter,
