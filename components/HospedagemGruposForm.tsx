@@ -217,7 +217,7 @@ const HospedagemGruposForm: React.FC = () => {
   const [protocol, setProtocol] = useState('');
 
   useEffect(() => {
-    document.title = 'CONEX HotéisRIO – Hospedagem de Grupos / Espaços de Eventos';
+    document.title = 'Solicitação de Hospedagem (Grupos) | Espaços de Eventos | Inspeções';
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -287,7 +287,8 @@ const HospedagemGruposForm: React.FC = () => {
 
       // Determine region from location preference
       const locationToRegion: Record<string, string> = {
-        'Zona Sul': 'Ipanema / Leblon',
+        'Zona Sul 1 (Leme a São Conrado)': 'Zona Sul 1',
+        'Zona Sul 2 (Gloria a Botafogo)': 'Zona Sul 2',
         'Barra da Tijuca / Recreio': 'Barra / Recreio / São Conrado',
         'Centro': 'Centro / Santa Teresa / Lapa',
         'Indiferente': 'Outros',
@@ -442,6 +443,15 @@ const HospedagemGruposForm: React.FC = () => {
   const needsEvent =
     formData.tipoDemanda === DEMAND_TYPES.EVENT ||
     formData.tipoDemanda === DEMAND_TYPES.GROUP_EVENT;
+  let sectionIndex = 1;
+  const sectionSolicitante = String(sectionIndex++);
+  const sectionTipoDemanda = String(sectionIndex++);
+  const sectionHospedagem = needsRoom ? String(sectionIndex++) : null;
+  const sectionPerfil = String(sectionIndex++);
+  const sectionEspacos = needsEvent ? String(sectionIndex++) : null;
+  const sectionAB = String(sectionIndex++);
+  const sectionPagamento = String(sectionIndex++);
+  const sectionObservacoes = String(sectionIndex++);
 
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4">
@@ -454,11 +464,11 @@ const HospedagemGruposForm: React.FC = () => {
             className="h-20 mx-auto mb-6"
           />
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 uppercase tracking-tight">
-            Solicitação de Hospedagem (Grupos) e/ou Espaços de Eventos
+            Solicitação de Hospedagem (Grupos) | Espaços de Eventos | Inspeções
           </h1>
           <p className="text-slate-600 font-medium max-w-2xl mx-auto">
-            Canal oficial que conecta sua demanda diretamente aos hotéis associados do Rio de Janeiro, sem
-            intermediação financeira ou cobrança de comissões.
+            Canal oficial de HoteisRIO que conecta sua demanda diretamente aos hotéis associados a entidade da
+            cidade do Rio de Janeiro, sem intermediação financeira ou cobrança de comissões.
           </p>
         </div>
 
@@ -467,7 +477,7 @@ const HospedagemGruposForm: React.FC = () => {
 
             {/* ─── 1. Dados do Solicitante ─────────────────────────────────── */}
             <section>
-              <SectionHeader number="1" title="Dados do Solicitante" icon={<User className="w-5 h-5" />} />
+              <SectionHeader number={sectionSolicitante} title="Dados do Solicitante" icon={<User className="w-5 h-5" />} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
                   <label className={labelClass}>Nome completo *</label>
@@ -575,7 +585,7 @@ const HospedagemGruposForm: React.FC = () => {
 
             {/* ─── 2. Tipo de Demanda ──────────────────────────────────────── */}
             <section>
-              <SectionHeader number="2" title="Tipo de Demanda" icon={<FileText className="w-5 h-5" />} />
+              <SectionHeader number={sectionTipoDemanda} title="Tipo de Demanda" icon={<FileText className="w-5 h-5" />} />
               <RadioGroup
                 name="tipoDemanda"
                 options={[
@@ -599,7 +609,7 @@ const HospedagemGruposForm: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <SectionHeader
-                  number="3"
+                  number={sectionHospedagem || ''}
                   title="Informações da Hospedagem (para grupos)"
                   icon={<Calendar className="w-5 h-5" />}
                 />
@@ -679,7 +689,7 @@ const HospedagemGruposForm: React.FC = () => {
             {/* ─── 4. Perfil, Localização e Categoria ─────────────────────── */}
             <section>
               <SectionHeader
-                number="4"
+                number={sectionPerfil}
                 title="Perfil, Localização e Categoria"
                 icon={<MapPin className="w-5 h-5" />}
               />
@@ -723,7 +733,7 @@ const HospedagemGruposForm: React.FC = () => {
                   <label className={labelClass}>Localização de preferência</label>
                   <RadioGroup
                     name="localizacaoPreferencia"
-                    options={['Zona Sul', 'Barra da Tijuca / Recreio', 'Centro', 'Indiferente']}
+                    options={['Zona Sul 1 (Leme a São Conrado)', 'Zona Sul 2 (Gloria a Botafogo)', 'Barra da Tijuca / Recreio', 'Centro', 'Indiferente']}
                     value={formData.localizacaoPreferencia}
                     onChange={(v) => setFormData((prev) => ({ ...prev, localizacaoPreferencia: v }))}
                   />
@@ -738,7 +748,7 @@ const HospedagemGruposForm: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <SectionHeader
-                  number="5"
+                  number={sectionEspacos || ''}
                   title="Necessidade de Espaços e Infraestrutura"
                   icon={<Users className="w-5 h-5" />}
                 />
@@ -837,7 +847,7 @@ const HospedagemGruposForm: React.FC = () => {
             {/* ─── 6. Alimentos e Bebidas ──────────────────────────────────── */}
             <section>
               <SectionHeader
-                number="6"
+                number={sectionAB}
                 title="Alimentos e Bebidas (A&B)"
                 icon={<Utensils className="w-5 h-5" />}
               />
@@ -873,7 +883,7 @@ const HospedagemGruposForm: React.FC = () => {
             {/* ─── 7. Responsabilidade de Pagamento ───────────────────────── */}
             <section>
               <SectionHeader
-                number="7"
+                number={sectionPagamento}
                 title="Responsabilidade de Pagamento (Faturamento)"
                 icon={<CreditCard className="w-5 h-5" />}
               />
@@ -892,7 +902,7 @@ const HospedagemGruposForm: React.FC = () => {
             {/* ─── 8. Observações Gerais ───────────────────────────────────── */}
             <section>
               <SectionHeader
-                number="8"
+                number={sectionObservacoes}
                 title="Observações Gerais e Prazo de Resposta"
                 icon={<MessageSquare className="w-5 h-5" />}
               />
