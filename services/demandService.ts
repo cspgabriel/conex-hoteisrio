@@ -98,7 +98,7 @@ export const demandService = {
       return nextDemand;
     } catch (err) {
       if (err instanceof Error && err.message === 'TIMEOUT_EXCEEDED') {
-        throw new Error('O sistema está demorando muito para responder. Por favor, tente novamente ou verifique sua conexão.');
+        throw new Error('O sistema está demorando para responder. Por favor, aguarde e tente novamente.');
       }
       console.error('[SISTEMA-CRÍTICO] Exceção ao salvar no Firebase:', err);
       throw err;

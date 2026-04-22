@@ -23,6 +23,8 @@ export const CONEX_PREFERRED_LOCATIONS: string[] = [
   'Indiferente',
 ];
 
+// Maps the public CONEX location options shown in the form to the internal region labels
+// stored in demand records. "Indiferente" is normalized to "Outros" to keep reporting consistent.
 export const CONEX_LOCATION_REGION_MAP: Record<string, string> = {
   'Zona Sul 1 (Leme a São Conrado)': 'Leme / Copacabana / Ipanema / Leblon / São Conrado',
   'Zona Sul 2 (Glória a Botafogo)': 'Glória / Flamengo / Botafogo',
