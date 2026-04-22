@@ -156,7 +156,7 @@ const DEMAND_TYPES = {
   GROUP: "Grupo (acima de 10 UH’s)",
   EVENT: 'Evento / Uso de salão (sem hospedagem)',
   GROUP_EVENT: 'Grupo + Evento',
-  SITE_INSPECTION: 'Visita técnica (site inspection)',
+  SITE_INSPECTION: 'Inspeção técnica (site inspection)',
 } as const;
 
 const initialFormData = {
@@ -292,7 +292,7 @@ const HospedagemGruposForm: React.FC = () => {
       // Determine region from location preference
       const locationToRegion: Record<string, string> = {
         'Zona Sul 1 (Leme a São Conrado)': 'Leme / Copacabana / Ipanema / Leblon / São Conrado',
-        'Zona Sul 2 (Gloria a Botafogo)': 'Glória / Flamengo / Botafogo',
+        'Zona Sul 2 (Glória a Botafogo)': 'Glória / Flamengo / Botafogo',
         'Barra da Tijuca / Recreio': 'Barra / Recreio / São Conrado',
         'Centro': 'Centro / Santa Teresa / Lapa',
         'Indiferente': 'Outros',
@@ -476,7 +476,7 @@ const HospedagemGruposForm: React.FC = () => {
             Solicitação de Hospedagem (Grupos) | Espaços de Eventos | Inspeções
           </h1>
           <p className="text-slate-600 font-medium max-w-2xl mx-auto">
-            Canal oficial de HoteisRIO que conecta sua demanda diretamente aos hotéis associados a entidade da cidade do Rio de Janeiro, sem
+            Canal oficial de HotéisRIO que conecta sua demanda diretamente aos hotéis associados a entidade da cidade do Rio de Janeiro, sem
             intermediação financeira ou cobrança de comissões.
           </p>
         </div>
@@ -744,7 +744,7 @@ const HospedagemGruposForm: React.FC = () => {
                     name="localizacaoPreferencia"
                     options={[
                       'Zona Sul 1 (Leme a São Conrado)',
-                      'Zona Sul 2 (Gloria a Botafogo)',
+                      'Zona Sul 2 (Glória a Botafogo)',
                       'Barra da Tijuca / Recreio',
                       'Centro',
                       'Indiferente',
