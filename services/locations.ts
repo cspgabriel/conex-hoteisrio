@@ -15,6 +15,22 @@ export const REGIONS: string[] = [
   'Outros'
 ];
 
+export const CONEX_PREFERRED_LOCATIONS: string[] = [
+  'Zona Sul 1 (Leme a São Conrado)',
+  'Zona Sul 2 (Glória a Botafogo)',
+  'Barra da Tijuca / Recreio',
+  'Centro',
+  'Indiferente',
+];
+
+export const CONEX_LOCATION_REGION_MAP: Record<string, string> = {
+  'Zona Sul 1 (Leme a São Conrado)': 'Leme / Copacabana / Ipanema / Leblon / São Conrado',
+  'Zona Sul 2 (Glória a Botafogo)': 'Glória / Flamengo / Botafogo',
+  'Barra da Tijuca / Recreio': 'Barra / Recreio',
+  'Centro': 'Centro / Santa Teresa / Lapa',
+  'Indiferente': 'Outros',
+};
+
 // Returns a sorted list of unique neighborhoods from stored demands.
 export const fetchUniqueNeighborhoods = async (): Promise<string[]> => {
   try {

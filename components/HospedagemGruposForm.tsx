@@ -21,6 +21,7 @@ import { Demand, Status } from '../types';
 import { motion } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PublicSiteLayout from './PublicSiteLayout';
+import { CONEX_LOCATION_REGION_MAP, CONEX_PREFERRED_LOCATIONS } from '../services/locations';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -291,14 +292,7 @@ const HospedagemGruposForm: React.FC = () => {
       };
 
       // Determine region from location preference
-      const locationToRegion: Record<string, string> = {
-        'Zona Sul 1 (Leme a São Conrado)': 'Leme / Copacabana / Ipanema / Leblon / São Conrado',
-        'Zona Sul 2 (Glória a Botafogo)': 'Glória / Flamengo / Botafogo',
-        'Barra da Tijuca / Recreio': 'Barra / Recreio',
-        'Centro': 'Centro / Santa Teresa / Lapa',
-        'Indiferente': 'Outros',
-      };
-      const region = locationToRegion[formData.localizacaoPreferencia] || 'Outros';
+      const region = CONEX_LOCATION_REGION_MAP[formData.localizacaoPreferencia] || 'Outros';
 
       const newDemand: Demand = {
         id: newId,
@@ -745,13 +739,7 @@ const HospedagemGruposForm: React.FC = () => {
                   <label className={labelClass}>Localização de preferência</label>
                   <RadioGroup
                     name="localizacaoPreferencia"
-                    options={[
-                      'Zona Sul 1 (Leme a São Conrado)',
-                      'Zona Sul 2 (Glória a Botafogo)',
-                      'Barra da Tijuca / Recreio',
-                      'Centro',
-                      'Indiferente',
-                    ]}
+                    options={CONEX_PREFERRED_LOCATIONS}
                     value={formData.localizacaoPreferencia}
                     onChange={(v) => setFormData((prev) => ({ ...prev, localizacaoPreferencia: v }))}
                   />

@@ -4,6 +4,7 @@ import { collection, deleteDoc, doc, getDocs, orderBy, query, setDoc, writeBatch
 import { db } from './firebase';
 
 const COLLECTION_NAME = 'CONEX_SOLICITACOES';
+// Firestore batches support up to 500 operations; we keep headroom for future metadata writes in the same commit.
 const FIRESTORE_BATCH_LIMIT = 450;
 
 const sanitizeValue = (value: unknown): unknown => {
