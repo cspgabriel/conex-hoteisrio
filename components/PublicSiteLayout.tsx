@@ -9,7 +9,7 @@ interface PublicSiteLayoutProps {
 
 const PublicSiteLayout: React.FC<PublicSiteLayoutProps> = ({ children, contentClassName = '' }) => (
   <div className="min-h-screen bg-[#f8fafd] text-[#333333] font-inter flex flex-col">
-    <nav className="fixed top-0 w-full z-50 bg-white/10 backdrop-blur-xl border-b border-white/20 px-6 py-4">
+    <nav className="fixed top-0 w-full z-50 bg-white border-b border-slate-200 px-6 py-4 shadow-sm">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 bg-[#0a2e50] rounded-xl flex items-center justify-center">
@@ -20,9 +20,6 @@ const PublicSiteLayout: React.FC<PublicSiteLayoutProps> = ({ children, contentCl
           </div>
         </div>
         <div className="flex items-center gap-6">
-          <Link to="/hospedagem" className="hidden md:block text-[10px] font-black uppercase tracking-[0.2em] text-[#0a2e50] hover:text-[#c5a059] transition-colors">
-            REGISTRO DA DEMANDA
-          </Link>
           <Link to="/hospedagem" className="bg-[#0a2e50] text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-[#c5a059] transition-all shadow-lg hover:-translate-y-0.5">
             Iniciar registro de demanda
           </Link>
