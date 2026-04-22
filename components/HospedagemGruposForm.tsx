@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Building2,
   Mail,
@@ -19,7 +19,7 @@ import {
 import { demandService } from '../services/demandService';
 import { Demand, Status } from '../types';
 import { motion } from 'motion/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -213,12 +213,16 @@ const initialFormData = {
 const HospedagemGruposForm: React.FC = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [protocol, setProtocol] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const protocol = useMemo(() => new URLSearchParams(location.search).get('protocolo') || '', [location.search]);
+  const isSuccessRoute = location.pathname === '/hospedagem/sucesso';
 
   useEffect(() => {
-    document.title = 'CONEX HotéisRIO – Hospedagem de Grupos / Espaços de Eventos';
-  }, []);
+    document.title = isSuccessRoute
+      ? 'CONEX HotéisRIO – Solicitação enviada'
+      : 'CONEX HotéisRIO – Hospedagem de Grupos / Espaços de Eventos';
+  }, [isSuccessRoute]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -287,7 +291,8 @@ const HospedagemGruposForm: React.FC = () => {
 
       // Determine region from location preference
       const locationToRegion: Record<string, string> = {
-        'Zona Sul': 'Ipanema / Leblon',
+        'Zona Sul 1 (Leme a São Conrado)': 'Leme / Copacabana / Ipanema / Leblon / São Conrado',
+        'Zona Sul 2 (Gloria a Botafogo)': 'Glória / Flamengo / Botafogo',
         'Barra da Tijuca / Recreio': 'Barra / Recreio / São Conrado',
         'Centro': 'Centro / Santa Teresa / Lapa',
         'Indiferente': 'Outros',
@@ -376,8 +381,8 @@ const HospedagemGruposForm: React.FC = () => {
       // Fire and forget notification
       demandService.sendAutomaticNotification(newDemand).catch(() => {});
 
-      setProtocol(newId);
-      setSubmitted(true);
+      setFormData(initialFormData);
+      navigate(`/hospedagem/sucesso?protocolo=${encodeURIComponent(newId)}`);
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Erro ao enviar solicitação. Por favor, tente novamente.');
@@ -388,7 +393,28 @@ const HospedagemGruposForm: React.FC = () => {
 
   // ─── Success Screen ──────────────────────────────────────────────────────────
 
-  if (submitted) {
+  const needsRoom =
+    formData.tipoDemanda === DEMAND_TYPES.GROUP ||
+    formData.tipoDemanda === DEMAND_TYPES.GROUP_EVENT;
+  const needsEvent =
+    formData.tipoDemanda === DEMAND_TYPES.EVENT ||
+    formData.tipoDemanda === DEMAND_TYPES.GROUP_EVENT;
+  const sectionNumbers = useMemo(() => {
+    let current = 1;
+
+    return {
+      requester: String(current++),
+      demandType: String(current++),
+      stay: needsRoom ? String(current++) : null,
+      profile: String(current++),
+      event: needsEvent ? String(current++) : null,
+      food: String(current++),
+      payment: String(current++),
+      notes: String(current++),
+    };
+  }, [needsEvent, needsRoom]);
+
+  if (isSuccessRoute) {
     return (
       <div className="min-h-screen bg-slate-50 py-12 px-4 flex flex-col items-center justify-center">
         <motion.div
@@ -417,8 +443,8 @@ const HospedagemGruposForm: React.FC = () => {
             </Link>
             <button
               onClick={() => {
-                setSubmitted(false);
                 setFormData(initialFormData);
+                navigate('/hospedagem');
               }}
               className="block w-full text-slate-500 py-2 text-sm font-medium hover:text-slate-800"
             >
@@ -436,13 +462,6 @@ const HospedagemGruposForm: React.FC = () => {
     'w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all placeholder:text-slate-400 text-sm';
   const labelClass = 'block text-sm font-bold text-slate-700 mb-2';
 
-  const needsRoom =
-    formData.tipoDemanda === DEMAND_TYPES.GROUP ||
-    formData.tipoDemanda === DEMAND_TYPES.GROUP_EVENT;
-  const needsEvent =
-    formData.tipoDemanda === DEMAND_TYPES.EVENT ||
-    formData.tipoDemanda === DEMAND_TYPES.GROUP_EVENT;
-
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
@@ -454,10 +473,10 @@ const HospedagemGruposForm: React.FC = () => {
             className="h-20 mx-auto mb-6"
           />
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2 uppercase tracking-tight">
-            Solicitação de Hospedagem (Grupos) e/ou Espaços de Eventos
+            Solicitação de Hospedagem (Grupos) | Espaços de Eventos | Inspeções
           </h1>
           <p className="text-slate-600 font-medium max-w-2xl mx-auto">
-            Canal oficial que conecta sua demanda diretamente aos hotéis associados do Rio de Janeiro, sem
+            Canal oficial de HoteisRIO que conecta sua demanda diretamente aos hotéis associados a entidade da cidade do Rio de Janeiro, sem
             intermediação financeira ou cobrança de comissões.
           </p>
         </div>
@@ -467,7 +486,7 @@ const HospedagemGruposForm: React.FC = () => {
 
             {/* ─── 1. Dados do Solicitante ─────────────────────────────────── */}
             <section>
-              <SectionHeader number="1" title="Dados do Solicitante" icon={<User className="w-5 h-5" />} />
+              <SectionHeader number={sectionNumbers.requester} title="Dados do Solicitante" icon={<User className="w-5 h-5" />} />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
                   <label className={labelClass}>Nome completo *</label>
@@ -575,7 +594,7 @@ const HospedagemGruposForm: React.FC = () => {
 
             {/* ─── 2. Tipo de Demanda ──────────────────────────────────────── */}
             <section>
-              <SectionHeader number="2" title="Tipo de Demanda" icon={<FileText className="w-5 h-5" />} />
+              <SectionHeader number={sectionNumbers.demandType} title="Tipo de Demanda" icon={<FileText className="w-5 h-5" />} />
               <RadioGroup
                 name="tipoDemanda"
                 options={[
@@ -599,7 +618,7 @@ const HospedagemGruposForm: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <SectionHeader
-                  number="3"
+                  number={sectionNumbers.stay || ''}
                   title="Informações da Hospedagem (para grupos)"
                   icon={<Calendar className="w-5 h-5" />}
                 />
@@ -679,7 +698,7 @@ const HospedagemGruposForm: React.FC = () => {
             {/* ─── 4. Perfil, Localização e Categoria ─────────────────────── */}
             <section>
               <SectionHeader
-                number="4"
+                number={sectionNumbers.profile}
                 title="Perfil, Localização e Categoria"
                 icon={<MapPin className="w-5 h-5" />}
               />
@@ -723,7 +742,13 @@ const HospedagemGruposForm: React.FC = () => {
                   <label className={labelClass}>Localização de preferência</label>
                   <RadioGroup
                     name="localizacaoPreferencia"
-                    options={['Zona Sul', 'Barra da Tijuca / Recreio', 'Centro', 'Indiferente']}
+                    options={[
+                      'Zona Sul 1 (Leme a São Conrado)',
+                      'Zona Sul 2 (Gloria a Botafogo)',
+                      'Barra da Tijuca / Recreio',
+                      'Centro',
+                      'Indiferente',
+                    ]}
                     value={formData.localizacaoPreferencia}
                     onChange={(v) => setFormData((prev) => ({ ...prev, localizacaoPreferencia: v }))}
                   />
@@ -738,7 +763,7 @@ const HospedagemGruposForm: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <SectionHeader
-                  number="5"
+                  number={sectionNumbers.event || ''}
                   title="Necessidade de Espaços e Infraestrutura"
                   icon={<Users className="w-5 h-5" />}
                 />
@@ -837,7 +862,7 @@ const HospedagemGruposForm: React.FC = () => {
             {/* ─── 6. Alimentos e Bebidas ──────────────────────────────────── */}
             <section>
               <SectionHeader
-                number="6"
+                number={sectionNumbers.food}
                 title="Alimentos e Bebidas (A&B)"
                 icon={<Utensils className="w-5 h-5" />}
               />
@@ -873,7 +898,7 @@ const HospedagemGruposForm: React.FC = () => {
             {/* ─── 7. Responsabilidade de Pagamento ───────────────────────── */}
             <section>
               <SectionHeader
-                number="7"
+                number={sectionNumbers.payment}
                 title="Responsabilidade de Pagamento (Faturamento)"
                 icon={<CreditCard className="w-5 h-5" />}
               />
@@ -892,7 +917,7 @@ const HospedagemGruposForm: React.FC = () => {
             {/* ─── 8. Observações Gerais ───────────────────────────────────── */}
             <section>
               <SectionHeader
-                number="8"
+                number={sectionNumbers.notes}
                 title="Observações Gerais e Prazo de Resposta"
                 icon={<MessageSquare className="w-5 h-5" />}
               />

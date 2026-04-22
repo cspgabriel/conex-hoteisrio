@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Building2, Globe, Users, CheckCircle, ArrowRight, Menu, LogIn } from 'lucide-react';
+import { Building2, Globe, Users, CheckCircle, ArrowRight } from 'lucide-react';
 
 const LandingPage: React.FC = () => {
   return (
@@ -17,14 +17,11 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
           <div className="flex items-center gap-6">
-            <a href="/marketing/index-pipeline-conex-hoteisrio.html" target="_blank" className="hidden md:block text-[10px] font-black uppercase tracking-[0.2em] text-[#0a2e50] hover:text-[#c5a059] transition-colors">
-              Planejamento
-            </a>
-            <Link to="/gestao" className="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-[#0a2e50] transition-colors">
-              <LogIn className="w-3 h-3" /> Acesso Restrito
+            <Link to="/hospedagem" className="hidden md:block text-[10px] font-black uppercase tracking-[0.2em] text-[#0a2e50] hover:text-[#c5a059] transition-colors">
+              REGISTRO DA DEMANDA
             </Link>
             <Link to="/hospedagem" className="bg-[#0a2e50] text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-[#c5a059] transition-all shadow-lg hover:-translate-y-0.5">
-              Enviar Demanda
+              Iniciar registro de demanda
             </Link>
           </div>
         </div>
@@ -74,7 +71,7 @@ const LandingPage: React.FC = () => {
             <BenefitCard 
               icon={<Globe className="w-8 h-8" />}
               title="Contato Direto"
-              description="Sua demanda é encaminhada estrategicamente para o Diretor Comercial ou Gerente Geral do hotel."
+              description="Sua demanda é encaminhada estrategicamente direto para o hotel."
             />
             <BenefitCard 
               icon={<CheckCircle className="w-8 h-8" />}
@@ -96,7 +93,7 @@ const LandingPage: React.FC = () => {
           <div>
             <h2 className="font-outfit text-3xl md:text-4xl font-bold text-[#0a2e50] mb-6">Centralize sua Demanda de Grupos agora.</h2>
             <p className="text-slate-600 mb-8 leading-relaxed">
-              Preencha o formulário institucional. Nossa equipe encaminhará sua solicitação para os hotéis associados em tempo recorde, sem cobrança de taxas ou comissões.
+              Preencha o formulário institucional. Nosso sistema encaminhará sua solicitação para os hotéis associados em tempo recorde, sem cobrança de taxas ou comissões.
             </p>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-[#0a2e50] font-bold">
@@ -127,17 +124,17 @@ const LandingPage: React.FC = () => {
                 <div className="flex items-center gap-4 mb-8">
                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">02</div>
                    <div>
-                      <h4 className="font-bold text-[#0a2e50]">Equipe CONEX Valida</h4>
+                      <h4 className="font-bold text-[#0a2e50]">O Sistema CONEX Valida</h4>
                       <p className="text-sm text-slate-500">Fazemos o roteamento para os hotéis associados.</p>
                    </div>
-                </div>
+                 </div>
                 <div className="flex items-center gap-4">
                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">03</div>
                    <div>
                       <h4 className="font-bold text-[#0a2e50]">Resposta Direta</h4>
-                      <p className="text-sm text-slate-500">O Gerente Geral entra em contato direto com você.</p>
+                      <p className="text-sm text-slate-500">O Hotel irá entrar em contato direto com você.</p>
                    </div>
-                </div>
+                 </div>
              </div>
           </div>
         </div>
@@ -151,7 +148,7 @@ const LandingPage: React.FC = () => {
             alt="HotéisRIO" 
             className="h-16 mx-auto mb-6 brightness-0 invert opacity-50"
           />
-          <p className="text-sm mb-2">&copy; 2026 HotéisRIO — Sindicato dos Meios de Hospedagem do Município do Rio de Janeiro.</p>
+          <p className="text-sm mb-2">&copy; 2026 HotéisRIO — Sindicato Patronal dos Meios de Hospedagens da cidade do Rio de Janeiro.</p>
           <p className="text-xs uppercase tracking-widest font-bold text-white/30">Iniciativa CONEX HotéisRIO — Conexão B2B e Turismo</p>
         </div>
       </footer>

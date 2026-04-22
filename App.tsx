@@ -746,6 +746,7 @@ const App: React.FC = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/consultar" element={<PublicConsultation />} />
         <Route path="/hospedagem" element={<HospedagemGruposForm />} />
+        <Route path="/hospedagem/sucesso" element={<HospedagemGruposForm />} />
         <Route path="/ordem-publica" element={<PublicDemandOrderForm />} />
         
         <Route 
