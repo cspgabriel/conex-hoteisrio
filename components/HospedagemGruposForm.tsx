@@ -20,6 +20,7 @@ import { demandService } from '../services/demandService';
 import { Demand, Status } from '../types';
 import { motion } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import PublicSiteLayout from './PublicSiteLayout';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -416,43 +417,45 @@ const HospedagemGruposForm: React.FC = () => {
 
   if (isSuccessRoute) {
     return (
-      <div className="min-h-screen bg-slate-50 py-12 px-4 flex flex-col items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="bg-white p-8 rounded-3xl shadow-xl border border-slate-200 max-w-md w-full text-center"
-        >
-          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle2 className="w-10 h-10 text-emerald-600" />
-          </div>
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">Solicitação enviada!</h2>
-          <p className="text-slate-600 mb-6">
-            Sua solicitação foi registrada com sucesso. Nossa equipe processará a demanda e os hotéis associados
-            entrarão em contato em <strong>5 a 10 dias úteis</strong>.
-          </p>
-          <div className="bg-slate-50 p-4 rounded-2xl mb-8 border border-slate-100">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Protocolo</p>
-            <p className="text-3xl font-mono font-bold text-blue-600">{protocol}</p>
-          </div>
-          <div className="space-y-3">
-            <Link
-              to="/consultar"
-              className="block w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md"
-            >
-              Consultar Status
-            </Link>
-            <button
-              onClick={() => {
-                setFormData(initialFormData);
-                navigate('/hospedagem');
-              }}
-              className="block w-full text-slate-500 py-2 text-sm font-medium hover:text-slate-800"
-            >
-              Enviar outra solicitação
-            </button>
-          </div>
-        </motion.div>
-      </div>
+      <PublicSiteLayout contentClassName="pt-28">
+        <div className="py-12 px-4 flex flex-col items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white p-8 rounded-3xl shadow-xl border border-slate-200 max-w-md w-full text-center"
+          >
+            <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Solicitação enviada!</h2>
+            <p className="text-slate-600 mb-6">
+              Sua solicitação foi registrada com sucesso. Nossa equipe processará a demanda e os hotéis associados
+              entrarão em contato em <strong>5 a 10 dias úteis</strong>.
+            </p>
+            <div className="bg-slate-50 p-4 rounded-2xl mb-8 border border-slate-100">
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Protocolo</p>
+              <p className="text-3xl font-mono font-bold text-blue-600">{protocol}</p>
+            </div>
+            <div className="space-y-3">
+              <Link
+                to="/consultar"
+                className="block w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md"
+              >
+                Consultar Status
+              </Link>
+              <button
+                onClick={() => {
+                  setFormData(initialFormData);
+                  navigate('/hospedagem');
+                }}
+                className="block w-full text-slate-500 py-2 text-sm font-medium hover:text-slate-800"
+              >
+                Enviar outra solicitação
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      </PublicSiteLayout>
     );
   }
 
@@ -463,8 +466,8 @@ const HospedagemGruposForm: React.FC = () => {
   const labelClass = 'block text-sm font-bold text-slate-700 mb-2';
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <PublicSiteLayout contentClassName="pt-28">
+      <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="text-center mb-10">
           <img
@@ -982,7 +985,7 @@ const HospedagemGruposForm: React.FC = () => {
           </Link>
         </div>
       </div>
-    </div>
+    </PublicSiteLayout>
   );
 };
 

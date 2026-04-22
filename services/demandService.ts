@@ -1,17 +1,20 @@
 import { Demand, Status } from '../types';
 import { normalizeRegion } from './locations';
-import { supabase } from './supabase';
+import { collection, deleteDoc, doc, getDocs, orderBy, query, setDoc, writeBatch } from 'firebase/firestore';
+import { db } from './firebase';
 
-const TABLE_NAME = 'demands';
+const COLLECTION_NAME = 'CONEX_SOLICITACOES';
+const FIRESTORE_BATCH_LIMIT = 450;
 
-const sanitizeData = (data: Demand): Demand => {
-  const cleanData = { ...data } as any;
-  Object.keys(cleanData).forEach((key) => {
-    if (cleanData[key] === undefined) {
-      cleanData[key] = null;
-    }
-  });
-  return cleanData as Demand;
+const sanitizeValue = (value: unknown): unknown => {
+  if (value === undefined) return null;
+  if (Array.isArray(value)) return value.map(sanitizeValue);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, nestedValue]) => [key, sanitizeValue(nestedValue)])
+    );
+  }
+  return value;
 };
 
 const normalizeDemand = (demand: any): Demand => ({
@@ -20,115 +23,57 @@ const normalizeDemand = (demand: any): Demand => ({
   region: normalizeRegion(demand.region || ''),
 });
 
-// Mapping frontend Demand fields (camelCase) to DB snake_case if needed
-// But for now, we'll use camelCase in DB if possible, or mapping
-// Actually, let's map it for robust DB practice
-const toDB = (d: Demand) => ({
-  id: d.id,
-  hotel_name: d.hotelName,
-  region: d.region,
-  neighborhood: d.neighborhood,
-  address: d.address,
-  contact_email: d.contactEmail,
-  contact_phone: d.contactPhone,
-  category: d.category,
-  description: d.description,
-  status: d.status,
-  date_opened: d.dateOpened,
-  date_resolved: d.dateResolved,
-  assigned_agency: d.assignedAgency,
-  lat: d.lat,
-  lng: d.lng,
-  attachments: d.attachments || [],
-  custom_fields: d.customFields || {}
+const toFirestore = (demand: Demand): Demand => sanitizeValue({
+  ...demand,
+  category: Array.isArray(demand.category) ? demand.category : [demand.category].filter(Boolean),
+  customFields: demand.customFields || {},
+  attachments: demand.attachments || [],
+}) as Demand;
+
+const fromFirestore = (id: string, data: any): Demand => normalizeDemand({
+  ...data,
+  id,
+  status: (data.status as Status) || Status.OPEN,
 });
 
-const fromDB = (d: any): Demand => {
-  const cf = d.custom_fields || {};
-  return {
-    id: d.id,
-    hotelName: d.hotel_name,
-    region: d.region,
-    neighborhood: d.neighborhood,
-    address: d.address,
-    contactEmail: d.contact_email,
-    contactPhone: d.contact_phone,
-    category: d.category || [],
-    description: d.description,
-    status: d.status as Status,
-    dateOpened: d.date_opened,
-    dateResolved: d.date_resolved,
-    assignedAgency: d.assigned_agency,
-    lat: d.lat,
-    lng: d.lng,
-    attachments: d.attachments || [],
-    
-    // Reconstitute typed fields from custom_fields
-    fullName: cf.fullName,
-    company: cf.company,
-    institutionType: cf.institutionType,
-    demandType: cf.demandType,
-    checkIn: cf.checkIn,
-    checkOut: cf.checkOut,
-    numNights: cf.numNights,
-    numUHs: cf.numUHs,
-    roomConfig: cf.roomConfig,
-    nationality: cf.nationality,
-    groupProfile: cf.groupProfile,
-    hotelCategory: cf.hotelCategory,
-    preferredLocation: cf.preferredLocation,
-    needsEventRoom: cf.needsEventRoom,
-    eventDates: cf.eventDates,
-    eventTime: cf.eventTime,
-    numParticipants: cf.numParticipants,
-    roomSetup: cf.roomSetup,
-    basicEquipment: cf.basicEquipment,
-    abServices: cf.abServices,
-    foodRestrictions: cf.foodRestrictions,
-    paymentPolicy: cf.paymentPolicy,
-    
-    customFields: cf
-  };
+const getCollectionRef = () => collection(db, COLLECTION_NAME);
+
+const commitInChunks = async <T>(items: T[], handler: (batch: ReturnType<typeof writeBatch>, item: T) => void) => {
+  for (let index = 0; index < items.length; index += FIRESTORE_BATCH_LIMIT) {
+    const chunk = items.slice(index, index + FIRESTORE_BATCH_LIMIT);
+    const batch = writeBatch(db);
+    chunk.forEach((item) => handler(batch, item));
+    await batch.commit();
+  }
 };
 
 export const demandService = {
   async getAll(): Promise<Demand[]> {
-    const { data, error } = await supabase
-      .from(TABLE_NAME)
-      .select('*')
-      .order('date_opened', { ascending: false });
-    
-    if (error) {
-      console.error('Error fetching demands:', error);
-      // Fallback to localStorage could be here, but let's stick to Supabase
+    try {
+      const snapshot = await getDocs(query(getCollectionRef(), orderBy('dateOpened', 'desc')));
+      return snapshot.docs.map((item) => fromFirestore(item.id, item.data()));
+    } catch (error) {
+      console.error('Error fetching demands from Firebase:', error);
       return [];
     }
-    
-    return (data || []).map(fromDB).map(normalizeDemand);
   },
 
   async replaceAll(demands: Demand[]): Promise<void> {
-    const dbDemands = demands.map(toDB);
-    // Be careful with large batches, but for simple sync it's fine
-    const { error } = await supabase
-      .from(TABLE_NAME)
-      .upsert(dbDemands);
-    
-    if (error) console.error('Error in replaceAll:', error);
+    await commitInChunks(demands, (batch, demand) => {
+      batch.set(doc(db, COLLECTION_NAME, demand.id), toFirestore(demand));
+    });
   },
 
   async syncSeedDemands(seedVersion: string, demands: Demand[]): Promise<void> {
-    // For now we skip seed in Supabase to avoid overwriting production data
-    console.log('Seed sync skipped for Supabase.');
+    console.log('Seed sync skipped for Firebase.');
   },
 
   async update(demand: Demand): Promise<void> {
-    const { error } = await supabase
-      .from(TABLE_NAME)
-      .update(toDB(demand))
-      .eq('id', demand.id);
-    
-    if (error) console.error('Error updating demand:', error);
+    try {
+      await setDoc(doc(db, COLLECTION_NAME, demand.id), toFirestore(demand), { merge: true });
+    } catch (error) {
+      console.error('Error updating demand in Firebase:', error);
+    }
   },
 
   async add(demand: Demand): Promise<Demand> {
@@ -137,57 +82,46 @@ export const demandService = {
        nextDemand.id = `CX-${Date.now()}`;
     }
     
-    console.log('[SISTEMA] Iniciando salvamento no Supabase:', nextDemand.id);
+    console.log('[SISTEMA] Iniciando salvamento no Firebase:', nextDemand.id);
     
     try {
-      const dbData = toDB(nextDemand);
+      const dbData = toFirestore(nextDemand);
       console.log('[SISTEMA] Dados normalizados para DB:', dbData.id);
 
-      // Race against a 15s timeout to avoid hanging UI
-      const result = await Promise.race([
-        supabase.from(TABLE_NAME).upsert([dbData]).select(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED')), 15000))
-      ]) as any;
-      
-      const { data, error } = result;
-      
-      if (error) {
-         console.error('[SISTEMA-ERRO] Falha no upsert Supabase:', error);
-         throw error;
-      }
+      await Promise.race([
+        setDoc(doc(db, COLLECTION_NAME, nextDemand.id), dbData),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT_EXCEEDED')), 15000)),
+      ]);
       
       console.log('[SISTEMA] Salvamento concluído com sucesso!');
-      return data && data[0] ? fromDB(data[0]) : nextDemand;
+      return nextDemand;
     } catch (err) {
-      if (err.message === 'TIMEOUT_EXCEEDED') {
+      if (err instanceof Error && err.message === 'TIMEOUT_EXCEEDED') {
         throw new Error('O sistema está demorando muito para responder. Por favor, tente novamente ou verifique sua conexão.');
       }
-      console.error('[SISTEMA-CRÍTICO] Exceção ao salvar no Supabase:', err);
+      console.error('[SISTEMA-CRÍTICO] Exceção ao salvar no Firebase:', err);
       throw err;
     }
   },
 
   async delete(id: string): Promise<void> {
-    const { error } = await supabase
-      .from(TABLE_NAME)
-      .delete()
-      .eq('id', id);
-    if (error) console.error('Error deleting demand:', error);
+    try {
+      await deleteDoc(doc(db, COLLECTION_NAME, id));
+    } catch (error) {
+      console.error('Error deleting demand from Firebase:', error);
+    }
   },
 
   async batchDelete(ids: string[]): Promise<void> {
-    const { error } = await supabase
-      .from(TABLE_NAME)
-      .delete()
-      .in('id', ids);
-    if (error) console.error('Error batch deleting:', error);
+    await commitInChunks(ids, (batch, id) => {
+      batch.delete(doc(db, COLLECTION_NAME, id));
+    });
   },
 
   async batchAdd(demands: Demand[]): Promise<void> {
-    const { error } = await supabase
-      .from(TABLE_NAME)
-      .upsert(demands.map(toDB));
-    if (error) console.error('Error batch adding:', error);
+    await commitInChunks(demands, (batch, demand) => {
+      batch.set(doc(db, COLLECTION_NAME, demand.id), toFirestore(demand), { merge: true });
+    });
   },
 
   async sendAutomaticNotification(demand: Demand): Promise<void> {
