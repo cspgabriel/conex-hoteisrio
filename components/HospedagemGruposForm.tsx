@@ -293,7 +293,7 @@ const HospedagemGruposForm: React.FC = () => {
       const locationToRegion: Record<string, string> = {
         'Zona Sul 1 (Leme a São Conrado)': 'Leme / Copacabana / Ipanema / Leblon / São Conrado',
         'Zona Sul 2 (Glória a Botafogo)': 'Glória / Flamengo / Botafogo',
-        'Barra da Tijuca / Recreio': 'Barra / Recreio / São Conrado',
+        'Barra da Tijuca / Recreio': 'Barra / Recreio',
         'Centro': 'Centro / Santa Teresa / Lapa',
         'Indiferente': 'Outros',
       };
@@ -412,7 +412,7 @@ const HospedagemGruposForm: React.FC = () => {
       payment: String(current++),
       notes: String(current++),
     };
-  }, [needsEvent, needsRoom]);
+  }, [formData.tipoDemanda, needsEvent, needsRoom]);
 
   if (isSuccessRoute) {
     return (
