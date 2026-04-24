@@ -1,6 +1,7 @@
 import { Demand, Status } from '../types';
 import { normalizeRegion } from './locations';
 import { supabase } from './supabase';
+import { brevoService } from './brevoService';
 
 const TABLE_NAME = 'demands';
 
@@ -157,7 +158,9 @@ export const demandService = {
       }
       
       console.log('[SISTEMA] Salvamento concluído com sucesso!');
-      return data && data[0] ? fromDB(data[0]) : nextDemand;
+      const savedDemand = data && data[0] ? fromDB(data[0]) : nextDemand;
+      brevoService.sendDemandNotification(savedDemand).catch(() => {});
+      return savedDemand;
     } catch (err) {
       if (err.message === 'TIMEOUT_EXCEEDED') {
         throw new Error('O sistema está demorando muito para responder. Por favor, tente novamente ou verifique sua conexão.');
